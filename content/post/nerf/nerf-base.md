@@ -30,11 +30,3 @@ cover:
 #     Text: "Suggest Changes" # edit text
 #     appendFilePath: false # to append file path to Edit link
 ---
-
-hello nerf!
-
-# nerf
-
-## ne
-
-### rf
