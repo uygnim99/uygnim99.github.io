@@ -9,7 +9,7 @@ tags: ["nerf"]
 showToc: true
 TocOpen: false
 UseHugoToc: true
-draft: true
+draft: false
 
 description: ""
 canonicalURL: "https://canonical.url/to/page"
