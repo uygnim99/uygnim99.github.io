@@ -35,7 +35,7 @@ paper: [NeRF: Representing Scenes as Neural Radiance Fields for View Synthesis](
 
 앞으로 리뷰하고 공부하게 될 논문들의 기본 베이스 개념인 NeRF에 대해서 간단히 알아봅시다. 
 
-# <span style="color:red">Ne</span>ural <span style="color:red">R</span>adiance <span style="color:red">F</span>ield
+# Neural Radiance Field
 
 
 논문에서 다루는 view synthesis 테스크는 어떤 물체를 여러 각도로 찍은 사진을 이용하여 새로운 각도에서 물체를 바라본 이미지를 얻어내는 작업입니다. 
@@ -47,6 +47,6 @@ MLP를 사용해 2D image를 input으로 활용하여 3D object의 color값과 v
 
 ## Model Pipeline 
 
-<img src="./nerf-pipeline.png" width="100%"  title="NeRF pipeline"/>
+<img src="https://github.com/uygnim99/uygnim99.github.io/blob/main/content/post/nerf/nerf-pipeline.png" width="100%"  title="NeRF pipeline"/>
 
 
