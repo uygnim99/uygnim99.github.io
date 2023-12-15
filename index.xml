@@ -11,7 +11,7 @@
     </image>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 15 Sep 2023 11:30:03 +0000</lastBuildDate><atom:link href="https://uygnim99.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 13 Dec 2023 17:30:00 +0000</lastBuildDate><atom:link href="https://uygnim99.github.io/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>relit</title>
       <link>https://uygnim99.github.io/post/relit/relit-base/</link>
@@ -19,6 +19,17 @@
       
       <guid>https://uygnim99.github.io/post/relit/relit-base/</guid>
       <description></description>
+    </item>
+    
+    <item>
+      <title>NeRF 기본 개념 설명</title>
+      <link>https://uygnim99.github.io/post/nerf/nerf-base/</link>
+      <pubDate>Wed, 13 Dec 2023 17:30:00 +0000</pubDate>
+      
+      <guid>https://uygnim99.github.io/post/nerf/nerf-base/</guid>
+      <description>paper: [NeRF: Representing Scenes as Neural Radiance Fields for View Synthesis]{https://arxiv.org/abs/2003.08934}
+앞으로 리뷰하고 공부하게 될 논문들의 기본 베이스 개념인 NeRF에 대해서 간단히 알아보는 시간을 가져 봅시다.
+NeRF이란? </description>
     </item>
     
     
