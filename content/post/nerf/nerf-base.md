@@ -47,6 +47,6 @@ MLP를 사용해 2D image를 input으로 활용하여 3D object의 color값과 v
 
 ## Model Pipeline 
 
-please 3트
+please 4트
 
-![NeRF-pipeline]("https://raw.githubusercontent.com/uygnim99/uygnim99.github.io/gh-pages/post/nerf/nerf-pipeline.png")
+![NeRF-pipeline]("https://github.com/uygnim99/uygnim99.github.io/blob/gh-pages/post/nerf/nerf-pipeline.png?raw=true")
