@@ -51,4 +51,4 @@ please 9트
 
 ![NeRF-pipeline](/images/nerf-base/nerf-pipeline.png)
 
-<img src="/images/nerf-base/nerf-pipeline.png">
+<img src="/images/nerf-base/nerf-pipeline.png"/>
