@@ -50,3 +50,4 @@ MLP를 사용해 2D image를 input으로 활용하여 3D object의 color값과 v
 <img src="https://github.com/uygnim99/uygnim99.github.io/blob/main/content/post/nerf/nerf-pipeline.png" width="100%"  title="NeRF pipeline"/>
 
 
+![NeRF pipeline]("https://github.com/uygnim99/uygnim99.github.io/blob/main/content/post/nerf/nerf-pipeline.png")
