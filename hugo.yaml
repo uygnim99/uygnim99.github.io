@@ -78,8 +78,8 @@ params:
 
   # home-info mode
   homeInfoParams:
-    Title: "Hi there \U0001F44B"
-    Content: Welcome to my blog!
+    Title: "Mingdarin's Blog \U0001F44B"
+    Content: Interested in 3D Computer Vision
 
   socialIcons:
     # - name: twitter
@@ -87,7 +87,7 @@ params:
     # - name: stackoverflow
     #   url: "https://stackoverflow.com"
     - name: github
-      url: "https://github.com/"
+      url: "https://github.com/uygnim99"
 
   analytics:
     google:
