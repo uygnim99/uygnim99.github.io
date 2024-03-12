@@ -78,7 +78,7 @@ params:
 
   # home-info mode
   homeInfoParams:
-    Title: "Mingdarin's Blog \U0001F44B"
+    Title: "🍊 Mingdarin's Blog 🍊"
     Content: Interested in 3D Computer Vision
 
   socialIcons:
