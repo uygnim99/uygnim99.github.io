@@ -53,23 +53,40 @@ diffusion 분야 최신 논문을 읽기 전에, 리뷰논문을 공부하며 VA
 
 ## Introduction: Generative Models
 
-생성모델의 목적은 관찰한 sample x에 대해서, x의 분포도 **p(x)**를 알아내는것 입니다. 이를 이용해 **새로운 데이터들을 sampling을 통해 생성**할 수도 있고, 어떤 데이터에 대한 likelihood를 계산할 수도 있습니다.
+생성모델의 목적은 관찰한 sample x에 대해서, x의 분포도를 알아내는 것이다. 이를 이용해 **새로운 데이터들을 sampling을 통해 생성**할 수도 있고, 어떤 데이터에 대한 likelihood를 계산할 수도 있음.
 
 여러가지 방식의 생성모델들: 
 - GAN: adversarial한 방식을 이용해 분포도 학습
 - autoregressive model, VAE: likelihood-based 모델 
 - Score-based generative models
 
-이중에서 diffusion은 likelihood-based모델과 score-based모델 두가지의 관점으로 해석이 가능하고, 먼저 이번 글에서는 likelihood 관점의 해석을 분석해 봅시다. 
+이중에서 diffusion은 likelihood-based모델과 score-based모델 두가지의 관점으로 해석이 가능하고, 먼저 이번 글에서는 likelihood 관점의 해석을 분석해보자. 
 
 ## ELBO, VAE and Hierarchical VAE
 
+어떤 데이터가 있으면, 이를 몇가지의 특징을 이용해 표현하거나, 반대로 이러한 특징들을 이용해 데이터를 생성할 수 있다. 이러한 특징들이 latent variable **z**에 해당한다. 저차원의 latent들로 데이터를 표현할 수 있으면, latent들이 semantic할 것이라고 생각할 수 있다. 
+
+우리가 관찰한 데이터 **x**와 latent variable **z**의 joint distribution인 p(x,z)를 생각해 보자. 이를 이용해 우리가 구하고자 하는 p(x)를 두가지 방식으로 나타낼 수 있다:
+
 $$
-\begin{align}
-A^{\[0\]} & = Input Feature & (1) \\\\\
-Z^{\[1\]} & = W^{\[1\]}A^{\[0\]} & (2) \\\\\
-A^{\[1\]} & = g(Z^{\[1\]}) & (3) \\\\\
-Z^{\[2\]} & = W^{\[2\]}A^{\[1\]} & (4) \\\\\
-A^{\[2\]} & = g(Z^{\[2\]}) & (5)
-\end{align}
+\begin{equation}
+    p(x) = \int p(x,z)dz
+\end{equation}
 $$
+$$
+\begin{equation}
+    p(x) = \cfrac{p(x,z)}{p(z|x)}
+\end{equation}
+$$
+
+하지만, 위의 식들을 이용해 p(x)를 직접 구하기는 어려움. (1)의 경우 모든 latent **z**에 대해서 joint distribution을 구하기 어렵고, (2)의 경우 GT(ground truth) latent encoder p(z|x)를 얻을 수 없기 때문이다. 
+> latent encoder p(z|x): x가 주어졌을때의 z의 분포  
+> x를 latent variable **z**로 변환해주는 encoder로 볼 수 있음.
+
+생성모델의 목표는 x의 분포를 알아내는 것이고, 이는 결국 $$\log{p(x)}$$를 최대화 시켜야 함. 
+
+> p(x): likelihood  
+> > likelihood(가능도, 우도) <-> probability(확률)  
+> > **probability**: 확률분포를 고정시켰을 때, 그 분포에 따르면 이 값이 나올 확률이 얼마나 되는가?  
+> > **likelihood**: 관찰한 값들을 토대로 이 값들이 어떤 확률분포에서 생성되었을까?  
+> 

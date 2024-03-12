@@ -117,6 +117,8 @@ params:
     threshold: 0.4
     minMatchCharLength: 0
     keys: ["title", "permalink", "summary", "content"]
+
+  math: true
 menu:
   main:
     - identifier: archive
