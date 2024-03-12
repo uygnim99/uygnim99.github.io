@@ -51,7 +51,6 @@ diffusion 분야 최신 논문을 읽기 전에, 리뷰논문을 공부하며 VA
 
 생성모델이라는 개념을 제대로 접한 것은 이 논문이 처음이라, 최대한 제가 이해한 대로 글을 작성했습니다. 
 
----
 
 ### Introduction: Generative Models
 
@@ -64,7 +63,6 @@ diffusion 분야 최신 논문을 읽기 전에, 리뷰논문을 공부하며 VA
 
 이중에서 diffusion은 likelihood-based모델과 score-based모델 두가지의 관점으로 해석이 가능하고, 먼저 이번 글에서는 likelihood 관점의 해석을 분석해보자.  
 
----
 
 ### ELBO, VAE and Hierarchical VAE
 
@@ -94,5 +92,3 @@ $$
 > **probability**: 확률분포를 고정시켰을 때, 그 분포에 따르면 이 값이 나올 확률이 얼마나 되는가?  
 > **likelihood**: 관찰한 값들을 토대로 이 값들이 어떤 확률분포에서 생성되었을까?  
 > 결국 log-likelihood인 \\(\log{p(x)}\\)을 최대화시켜야함.  
- 
-h1
