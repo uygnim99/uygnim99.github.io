@@ -22,6 +22,8 @@ disableHLJS: false
 hideSummary: true
 searchHidden: false
 
+use_math: true
+
 # cover:
 #     image: "</images/2024-03-12-understanding-diffusion-model/cover.png>" # image path/url
 #     alt: "<alt text 텍스트>" # alt text
@@ -58,6 +60,8 @@ diffusion 분야 최신 논문을 읽기 전에, 리뷰논문을 공부하며 VA
 - autoregressive model, VAE: likelihood-based 모델 
 - Score-based generative models
 
-이중에서 diffusion은 likelihood-based모델과 score-based모델 두가지의 관점으로 해석이 가능합니다. 
-  
+이중에서 diffusion은 likelihood-based모델과 score-based모델 두가지의 관점으로 해석이 가능하고, 먼저 이번 글에서는 likelihood 관점의 해석을 분석해 봅시다. 
+
+## ELBO, VAE and Hierarchical VAE
+
 
