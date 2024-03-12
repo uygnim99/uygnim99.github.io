@@ -89,4 +89,5 @@ $$
 > > likelihood(가능도, 우도) <-> probability(확률)  
 > > **probability**: 확률분포를 고정시켰을 때, 그 분포에 따르면 이 값이 나올 확률이 얼마나 되는가?  
 > > **likelihood**: 관찰한 값들을 토대로 이 값들이 어떤 확률분포에서 생성되었을까?  
-> 결국 log-likelihood인 \\\log{p(x)}\\을 최대화시켜야함.  
+> 결국 log-likelihood인 \\(\log{p(x)}\\)을 최대화시켜야함.  
+제발 
