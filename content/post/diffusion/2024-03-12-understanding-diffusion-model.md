@@ -51,7 +51,9 @@ diffusion 분야 최신 논문을 읽기 전에, 리뷰논문을 공부하며 VA
 
 생성모델이라는 개념을 제대로 접한 것은 이 논문이 처음이라, 최대한 제가 이해한 대로 글을 작성했습니다. 
 
-## Introduction: Generative Models
+---
+
+### Introduction: Generative Models
 
 생성모델의 목적은 관찰한 sample x에 대해서, x의 분포도를 알아내는 것이다. 이를 이용해 **새로운 데이터들을 sampling을 통해 생성**할 수도 있고, 어떤 데이터에 대한 likelihood를 계산할 수도 있음.
 
@@ -60,9 +62,11 @@ diffusion 분야 최신 논문을 읽기 전에, 리뷰논문을 공부하며 VA
 - autoregressive model, VAE: likelihood-based 모델 
 - Score-based generative models
 
-이중에서 diffusion은 likelihood-based모델과 score-based모델 두가지의 관점으로 해석이 가능하고, 먼저 이번 글에서는 likelihood 관점의 해석을 분석해보자. 
+이중에서 diffusion은 likelihood-based모델과 score-based모델 두가지의 관점으로 해석이 가능하고, 먼저 이번 글에서는 likelihood 관점의 해석을 분석해보자.  
 
-## ELBO, VAE and Hierarchical VAE
+---
+
+### ELBO, VAE and Hierarchical VAE
 
 어떤 데이터가 있으면, 이를 몇가지의 특징을 이용해 표현하거나, 반대로 이러한 특징들을 이용해 데이터를 생성할 수 있다. 이러한 특징들이 latent variable **z**에 해당한다. 저차원의 latent들로 데이터를 표현할 수 있으면, latent들이 semantic할 것이라고 생각할 수 있다. 
 
