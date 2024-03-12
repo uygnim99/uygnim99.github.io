@@ -29,7 +29,7 @@ params:
   disableThemeToggle: false
 
   ShowReadingTime: false
-  ShowShareButtons: true
+  ShowShareButtons: false
   ShowPostNavLinks: true
   ShowBreadCrumbs: true
   ShowCodeCopyButtons: false
@@ -78,7 +78,7 @@ params:
 
   # home-info mode
   homeInfoParams:
-    Title: "🍊 Mingdarin's Blog 🍊"
+    Title: "🍊 Mingdarin's Blog"
     Content: Interested in 3D Computer Vision
 
   socialIcons:
