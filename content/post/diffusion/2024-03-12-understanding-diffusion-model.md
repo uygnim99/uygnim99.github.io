@@ -33,7 +33,7 @@ searchHidden: false
 #     Text: "Suggest Changes" # edit text
 #     appendFilePath: false # to append file path to Edit link
 ---
-## Understanding Diffusion Model: The Unified Perspective  
+### Understanding Diffusion Model: The Unified Perspective  
 > [[Paper](https://arxiv.org/abs/2208.11970)]  
 > **Author**: Calvin Luo  
 > Google Research, Brain Team  
