@@ -53,7 +53,7 @@ diffusion 분야 최신 논문을 읽기 전에, 리뷰논문을 공부하며 VA
 
 ## Introduction: Generative Models
 
-생성모델의 목적은 관찰한 sample x에 대해서, x의 분포도 **p(x)**를 알아내는것 입니다. 이를 이용해 **<r>새로운 데이터들을 sampling을 통해 생성</r>**할 수도 있고, 어떤 데이터에 대한 likelihood를 계산할 수도 있습니다.
+생성모델의 목적은 관찰한 sample x에 대해서, x의 분포도 **p(x)**를 알아내는것 입니다. 이를 이용해 **새로운 데이터들을 sampling을 통해 생성**할 수도 있고, 어떤 데이터에 대한 likelihood를 계산할 수도 있습니다.
 
 여러가지 방식의 생성모델들: 
 - GAN: adversarial한 방식을 이용해 분포도 학습
@@ -64,4 +64,12 @@ diffusion 분야 최신 논문을 읽기 전에, 리뷰논문을 공부하며 VA
 
 ## ELBO, VAE and Hierarchical VAE
 
-
+$$
+\begin{align}
+A^{\[0\]} & = Input Feature & (1) \\\\\
+Z^{\[1\]} & = W^{\[1\]}A^{\[0\]} & (2) \\\\\
+A^{\[1\]} & = g(Z^{\[1\]}) & (3) \\\\\
+Z^{\[2\]} & = W^{\[2\]}A^{\[1\]} & (4) \\\\\
+A^{\[2\]} & = g(Z^{\[2\]}) & (5)
+\end{align}
+$$
