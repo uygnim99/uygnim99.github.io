@@ -43,9 +43,9 @@ params:
   hidemeta: false
   hideSummary: false
 
-  showtoc: true
+  showtoc: false
   tocopen: false
-  UseHugoToc: true
+  UseHugoToc: false
 
   assets:
     # disableHLJS: true # to disable highlight.js
