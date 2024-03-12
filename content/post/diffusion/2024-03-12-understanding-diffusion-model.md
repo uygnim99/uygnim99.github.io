@@ -3,7 +3,10 @@ title: "[논문리뷰] Understanding Diffusion Model: The Unified Perspective"
 date: 2024-03-12
 weight: 1
 # aliases: ["/first"]
-tags: ["diffusion"]
+categories: "논문 리뷰"
+tags: 
+    - "diffusion"
+
 # author: "Me"
 # author: ["Me", "You"] # multiple authors
 showToc: true
