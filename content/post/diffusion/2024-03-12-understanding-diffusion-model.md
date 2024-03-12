@@ -1,6 +1,6 @@
 ---
 title: "[논문리뷰] Understanding Diffusion Model: The Unified Perspective"
-date: 2024-03-12T11:30:03+00:00
+date: 2024-03-12
 weight: 1
 # aliases: ["/first"]
 tags: ["diffusion"]
@@ -20,9 +20,9 @@ hideSummary: false
 searchHidden: false
 
 cover:
-    image: "/images/2024-03-12-understanding-diffusion-model/cover.png" # image path/url
-    alt: "alt text 텍스트" # alt text
-    caption: "caption 캡션" # display caption under cover
+    image: "</images/2024-03-12-understanding-diffusion-model/cover.png>" # image path/url
+    alt: "<alt text 텍스트>" # alt text
+    caption: "<caption 캡션>" # display caption under cover
     relative: false # when using page bundles set this to true
     hidden: true # only hide on current single page
 # editPost:
