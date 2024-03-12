@@ -30,11 +30,11 @@ params:
 
   ShowReadingTime: false
   ShowShareButtons: true
-  ShowPostNavLinks: false
+  ShowPostNavLinks: true
   ShowBreadCrumbs: true
   ShowCodeCopyButtons: false
   ShowWordCount: false
-  ShowRssButtonInSectionTermList: true
+  ShowRssButtonInSectionTermList: false
 
   disableSpecial1stPost: false
   disableScrollToTop: false
