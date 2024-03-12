@@ -83,7 +83,7 @@ $$
 > latent encoder p(z|x): x가 주어졌을때의 z의 분포  
 > x를 latent variable **z**로 변환해주는 encoder로 볼 수 있음.
 
-생성모델의 목표는 x의 분포를 알아내는 것이고, 이는 결국 $$\log{p(x)}$$를 최대화 시켜야 함. 
+생성모델의 목표는 x의 분포를 알아내는 것이고, 이는 결국 \\(\log{p(x)}\\)를 최대화 시켜야 함. 
 
 > p(x): likelihood  
 > likelihood(가능도, 우도) <-> probability(확률)  
