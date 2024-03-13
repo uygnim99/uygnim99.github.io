@@ -81,17 +81,74 @@ $$
 \end{equation}
 $$
 
-하지만, 위의 식들을 이용해 p(x)를 직접 구하기는 어려움. (1)의 경우 모든 latent **z**에 대해서 joint distribution을 구하기 어렵고, (2)의 경우 GT(ground truth) latent encoder p(z|x)를 얻을 수 없기 때문이다. 
-> latent encoder p(z|x): x가 주어졌을때의 z의 분포  
-> x를 latent variable **z**로 변환해주는 encoder로 볼 수 있음.
+하지만, 위의 식들을 이용해 p(x)를 직접 구하기는 어려움. (1)의 경우 모든 latent **z**에 대해서 joint distribution을 구하기 어렵고, (2)의 경우 ground truth latent encoder p(z|x)를 얻을 수 없기 때문이다.  
+ - latent encoder $p(z|x)$: sample x가 주어졌을때의 z의 분포  
 
 생성모델의 목표는 x의 분포를 알아내는 것이고, 이는 결국 $\log{p(x)}$를 최대화 시켜야 함. 
 
 p(x)는 likelihood이다. likelihood(가능도, 우도)와 probability(확률)은 비슷한 개념이지만, 확실히 차이가 있는 개념이다. 
 
-- **probability**: 확률분포를 고정시켰을 때, 그 분포에 따르면 이 값이 나올 확률이 얼마나 되는가?
-- **likelihood**: 관찰한 값들을 토대로 이 값들이 어떤 확률분포에서 생성되었을까?
+> **probability**: 확률분포를 고정시켰을 때, 그 분포에 따르면 이 값이 나올 확률이 얼마나 되는가?
+> **likelihood**: 관찰한 값들을 토대로 이 값들이 어떤 확률분포에서 생성되었을까?
   
 결국 log-likelihood인 $\log{p(x)}$을 최대화시켜야 하는 것이 생성모델의 목표이다. 
+
+ELBO를 식으로 표현하면 다음과 같다: 
+$$
+\begin{equation}
+    \log{p(x)} \geq \mathbb{E}_{q_\phi(z|x)}\bigg[\log{\cfrac{p(x,z)}{q_\phi(z|x)}}\bigg]
+\end{equation}
+$$
+- $q_\phi(z|x)$: flexible approximate **variational** distribution with parameter $\phi$ = true posterior $p(z|x)$를 추정하는 parameterizable model
+> **variational**: 변분. (추후 정리 예정)   
+> **posterior**: 관측 값이 주어졌을 때, 구하고자 하는 대상이 나올 확률   
+> **prior**: 구하고자 하는 대상 자체에 대한 확률 
+
+$\log{p(x)}$를 직접적으로 계산해 최대화 하는 대신, Lower bound를 최대화하는 방향으로 학습을 진행한다. 이 과정은 $q_\phi(z|x)$가 $p(z|x)$를 추정하도록 $\phi$를 학습하는 것으로 볼 수 있다. 
+
+위의 부등식을 유도하는 방식은 두가지이다. 첫번째로, Jensen's Inequality를 이용하는 방식은 다음과 같다: 
+$$
+\begin{align}
+    \log{p(x)} &= \log{\int p(x,z)dz} & \\
+    &= \log{\int\cfrac{p(x,z)q_\phi(z|x)}{q_\phi(z|x)}dz} \\
+    &= \log{\mathbb{E}_{q_\phi(z|x)}\bigg[\cfrac{p(x,z)}{q_\phi(z|x)}}\bigg]\\
+    &\geq \mathbb{E}_{q_\phi(z|x)}\bigg[\log{\cfrac{p(x,z)}{q_\phi(z|x)}}\bigg] & \leftarrow \mathrm{Jenson's \ Inequality}
+\end{align}
+$$
+
+이 방식은 수식에 대한 semantic한 의미를 찾기가 어렵다. 대신에, 두번째 방식으로 유도하는 과정은 다음과 같다: 
+$$
+\begin{align}
+    \log{p(x)} &= \log{p(x)}\int{q_\phi(z|x)dz} \\ 
+    &= \int{q_\phi(z|x)(\log{p(x)})dz} \\ 
+    &= \mathbb{E}_{q_\phi(z|x)}[\log{p(x)}] \\ 
+    &= \mathbb{E}_{q_\phi(z|x)}\bigg[\log{\cfrac{p(x,z)}{p(z|x)}}\bigg] \\ 
+    &= \mathbb{E}_{q_\phi(z|x)}\bigg[\log{\cfrac{p(x,z)q_\phi(z|x)}{p(z|x)q_\phi(z|x)}}\bigg] \\
+    &= \mathbb{E}_{q_\phi(z|x)}\bigg[\log{\cfrac{p(x,z)}{q_\phi(z|x)}}\bigg] + \mathbb{E}_{q_\phi(z|x)}\bigg[\log{\cfrac{q_\phi(z|x)}{p(z|x)}}\bigg] \\ 
+    &= \mathbb{E}_{q_\phi(z|x)}\bigg[\log{\cfrac{p(x,z)}{q_\phi(z|x)}}\bigg] + D_{KL}(q_\phi(z|x)||p(z|x)) \\ 
+    &\geq \mathbb{E}_{q_\phi(z|x)}\bigg[\log{\cfrac{p(x,z)}{q_\phi(z|x)}}\bigg]
+\end{align}
+$$
+
+> (13) -> (14): KL Divergence의 정의.  
+> (14) -> (15): KL Divergence는 항상 0보다 크다.  
+
+마지막 부분을 보면, $q_\phi(z|x)$가 $p(z|x)$의 분포도가 유사해질 수록 KL Divergence항이 0에 가까워진다. 근데, $p(z|x)$을 모르기 때문에 KL Divergence항을 직접 최소화하는 것은 어렵다. 대신에, ELBO항을 최대화 시키도록 parameter $\phi$를 optimize하는 것은 가능하다. 
+
+$\log{p(x)}$은 parameter $\phi$에 영향을 받지 않기 때문에 값이 변하지 않는다. 결국 ELBO 항을 최대화 시키는 과정이 KL Divergence항을 최소화 시키게 되고, 이는 $q_\phi(z|x)$가 $p(z|x)$의 분포도가 유사해지는 방향으로 최적화가 이루어진다. 
+
+### Variational Autoencoders (VAE)
+
+생성모델의 한 종류로, encoder(**$q_\phi(z|x)$**)을 통해 sample data를 latent vector로 변환하고, 이를 다시 decoder(**$p_\theta(x|z)$**)을 통해 본래의 sample data를 복원하는 과정을 통해 학습을 진행한다. 그리고 latent vector을 조절해 decoder을 거쳐 새로운 데이터를 sampling 할 수 있다. 이때, VAE는 ELBO를 직접 최대화하는 방식으로 optimize한다. ELBO항을 정리하면 다음과 같다: 
+$$
+\begin{align}
+    \mathbb{E}_{q_\phi(z|x)}\bigg[\log{\cfrac{p(x,z)}{q_\phi(z|x)}}\bigg] &= \mathbb{E}_{q_\phi(z|x)}\bigg[\log{\cfrac{p_\theta(x|z)p(z)}{q_\phi(z|x)}}\bigg] \\ 
+    &= \mathbb{E}_{q_\phi(z|x)}[\log{p_\theta(x|z)}] + \mathbb{E}_{q_\phi(z|x)}\bigg[\log{\cfrac{p(z)}{q_\phi(z|x)}}\bigg] \\ 
+    &= \underbrace{\mathbb{E}_{q_\phi(z|x)}[\log{p_\theta(x|z)}]}_{\footnotesize\mathrm{reconstruction \ term}} + \underbrace{D_{KL}(q_\phi(z|x) || p(z))}_{\footnotesize\mathrm{prior \ matching \ term}} 
+\end{align}
+$$
+
+> r**econstruction term**: 식 그대로 말로 풀면, "z의 분포가 $q_\phi(z|x)$ 일때의 $p_\theta(x|z)$의 기댓값"이다. 해석해보면 latent vector z로 변환했을 때, 이 값을 이용해 다시 x가 복원이 될 확률에 대한 기댓값이다. 결국, parameter $\phi$는 latent vector z를 잘 생성하도록, parameter $\theta$는 z에서 x로 잘 복원하도록 optimize하는 항으로 볼 수 있다.  
+> **prior matching term**: encoder $q_\phi(z|x)$가 latent prior $p(z)$와 얼마나 유사하냐를 의미한다. 이 항을 최소화 시키려면, $q_\phi(z|x)$가 $p(z)$의 분포와 유사하도록 optimize해야 한다. 
 
 
