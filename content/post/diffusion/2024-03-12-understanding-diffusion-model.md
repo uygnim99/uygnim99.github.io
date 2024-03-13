@@ -70,16 +70,7 @@ diffusion 분야 최신 논문을 읽기 전에, 리뷰논문을 공부하며 VA
 
 우리가 관찰한 데이터 **x**와 latent variable **z**의 joint distribution인 $p(x,z)$를 생각해 보자. 이를 이용해 우리가 구하고자 하는 p(x)를 두가지 방식으로 나타낼 수 있다:
 
-$$
-\begin{align}
-    p(x) = \int p(x,z)dz
-\end{align}
-$$
-$$
-\begin{align}
-    p(x) = \cfrac{p(x,z)}{p(z|x)}
-\end{align}
-$$
+
 
 하지만, 위의 식들을 이용해 p(x)를 직접 구하기는 어려움. (1)의 경우 모든 latent **z**에 대해서 joint distribution을 구하기 어렵고, (2)의 경우 ground truth latent encoder $p(z|x)$를 얻을 수 없기 때문이다.  
  - latent encoder $p(z|x)$: sample x가 주어졌을때의 z의 분포  
