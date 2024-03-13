@@ -97,7 +97,7 @@ ELBO를 식으로 표현하면 다음과 같다:
 
 $$
 \begin{align}
-    \log{p(x)} \geq \mathbb{E}_{q_\phi(z|x)}[\log{\cfrac{p(x,z)}{q_\phi(z|x)}}]
+    \log{p(x)} = \mathbb{E}_{q_\phi(z|x)}\bigg[\log{\cfrac{p(x,z)}{q_\phi(z|x)}}\bigg]
 \end{align}
 $$
 
