@@ -22,7 +22,7 @@ disableHLJS: false
 hideSummary: true
 searchHidden: false
 
-use_math: true
+# use_math: true
 
 # cover:
 #     image: "</images/2024-03-12-understanding-diffusion-model/cover.png>" # image path/url
