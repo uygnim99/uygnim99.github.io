@@ -68,20 +68,20 @@ diffusion 분야 최신 논문을 읽기 전에, 리뷰논문을 공부하며 VA
 
 어떤 데이터가 있으면, 이를 몇가지의 특징을 이용해 표현하거나, 반대로 이러한 특징들을 이용해 데이터를 생성할 수 있다. 이러한 특징들이 latent variable **z**에 해당한다. 저차원의 latent들로 데이터를 표현할 수 있으면, latent들이 semantic할 것이라고 생각할 수 있다. 
 
-우리가 관찰한 데이터 **x**와 latent variable **z**의 joint distribution인 p(x,z)를 생각해 보자. 이를 이용해 우리가 구하고자 하는 p(x)를 두가지 방식으로 나타낼 수 있다:
+우리가 관찰한 데이터 **x**와 latent variable **z**의 joint distribution인 $p(x,z)$를 생각해 보자. 이를 이용해 우리가 구하고자 하는 p(x)를 두가지 방식으로 나타낼 수 있다:
 
 $$
-\begin{equation}
+\begin{align}
     p(x) = \int p(x,z)dz
-\end{equation}
+\end{align}
 $$
 $$
-\begin{equation}
+\begin{align}
     p(x) = \cfrac{p(x,z)}{p(z|x)}
-\end{equation}
+\end{align}
 $$
 
-하지만, 위의 식들을 이용해 p(x)를 직접 구하기는 어려움. (1)의 경우 모든 latent **z**에 대해서 joint distribution을 구하기 어렵고, (2)의 경우 ground truth latent encoder p(z|x)를 얻을 수 없기 때문이다.  
+하지만, 위의 식들을 이용해 p(x)를 직접 구하기는 어려움. (1)의 경우 모든 latent **z**에 대해서 joint distribution을 구하기 어렵고, (2)의 경우 ground truth latent encoder $p(z|x)$를 얻을 수 없기 때문이다.  
  - latent encoder $p(z|x)$: sample x가 주어졌을때의 z의 분포  
 
 생성모델의 목표는 x의 분포를 알아내는 것이고, 이는 결국 $\log{p(x)}$를 최대화 시켜야 함. 
