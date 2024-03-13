@@ -88,12 +88,12 @@ $$
 
 p(x)는 likelihood이다. likelihood(가능도, 우도)와 probability(확률)은 비슷한 개념이지만, 확실히 차이가 있는 개념이다. 
 
-> **probability**: 확률분포를 고정시켰을 때, 그 분포에 따르면 이 값이 나올 확률이 얼마나 되는가?
+> **probability**: 확률분포를 고정시켰을 때, 그 분포에 따르면 이 값이 나올 확률이 얼마나 되는가?  
 > **likelihood**: 관찰한 값들을 토대로 이 값들이 어떤 확률분포에서 생성되었을까?
   
 결국 log-likelihood인 $\log{p(x)}$을 최대화시켜야 하는 것이 생성모델의 목표이다. 
 
-ELBO를 식으로 표현하면 다음과 같다: 
+ELBO를 식으로 표현하면 다음과 같다:  
 $$
 \begin{equation}
     \log{p(x)} \geq \mathbb{E}_{q_\phi(z|x)}\bigg[\log{\cfrac{p(x,z)}{q_\phi(z|x)}}\bigg]
@@ -107,6 +107,7 @@ $$
 $\log{p(x)}$를 직접적으로 계산해 최대화 하는 대신, Lower bound를 최대화하는 방향으로 학습을 진행한다. 이 과정은 $q_\phi(z|x)$가 $p(z|x)$를 추정하도록 $\phi$를 학습하는 것으로 볼 수 있다. 
 
 위의 부등식을 유도하는 방식은 두가지이다. 첫번째로, Jensen's Inequality를 이용하는 방식은 다음과 같다: 
+
 $$
 \begin{align}
     \log{p(x)} &= \log{\int p(x,z)dz} & \\
@@ -117,6 +118,7 @@ $$
 $$
 
 이 방식은 수식에 대한 semantic한 의미를 찾기가 어렵다. 대신에, 두번째 방식으로 유도하는 과정은 다음과 같다: 
+
 $$
 \begin{align}
     \log{p(x)} &= \log{p(x)}\int{q_\phi(z|x)dz} \\ 
