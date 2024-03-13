@@ -164,4 +164,6 @@ $$
 > **reconstruction term**: 식 그대로 말로 풀면, "z의 분포가 $q_\phi(z|x)$ 일때의 $p_\theta(x|z)$의 기댓값"이다. 해석해보면 latent vector z로 변환했을 때, 이 값을 이용해 다시 x가 복원이 될 확률에 대한 기댓값이다. 결국, parameter $\phi$는 latent vector z를 잘 생성하도록, parameter $\theta$는 z에서 x로 잘 복원하도록 optimize하는 항으로 볼 수 있다.  
 > **prior matching term**: encoder $q_\phi(z|x)$가 latent prior $p(z)$와 얼마나 유사하냐를 의미한다. 이 항을 최소화 시키려면, $q_\phi(z|x)$가 $p(z)$의 분포와 유사하도록 optimize해야 한다. 
 
+-240314-
+
 
