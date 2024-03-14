@@ -177,7 +177,7 @@ $$
 {{< /rawhtml >}}
 
 이 수식을 이용하면 ELBO의 KL Divergence항은 직접 계산이 가능하고, reconstruction term의 경우 Monte Carlo Estimation을 이용해 계산할 수 있다. 위의 objective 식을 변경하면 다음과 같다:   
-{{< rawhtml >}}
+<!-- {{< rawhtml >}}
 $$
 \begin{align}
 \begin{split}
@@ -186,7 +186,7 @@ $$
 \end{split}
 \end{align}
 $$
-{{< /rawhtml >}}  
+{{< /rawhtml >}}   -->
 
 - $\{z^{(l)}\}_{l=1}^{L}$: 모든 관측값 x에 대해서 $q_\phi(z|x)$ 분포에서 sampling된 값
 
