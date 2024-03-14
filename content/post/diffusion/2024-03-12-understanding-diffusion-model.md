@@ -180,10 +180,10 @@ $$
 {{< rawhtml >}}
 $$
 \begin{align}
-\begin{split}
+% \begin{split}
     \argmax_{\phi, \theta}\mathbb{E}_{q_\phi(z|x)}[\log{p_\theta(x|z)}] - D_{KL}(q_\phi(z|x)\ ||\ p(z)) \\
     \approx \argmax_{\phi, \theta}\sum_{l=1}^L{\log{p_\theta(x|z^{(l)})}} - D_{KL}(q_\phi(z|x)\ ||\ p(z))
-\end{split}
+% \end{split}
 \end{align}
 $$
 {{< /rawhtml >}}  
