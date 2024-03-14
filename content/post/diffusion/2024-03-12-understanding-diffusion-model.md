@@ -188,7 +188,7 @@ $$
 $$
 {{< /rawhtml >}}  
 
-- $\{z^{(l)}\}_{l=1}^L$: 모든 관측값 x에 대해서 $q_\phi(z|x)$ 분포에서 sampling된 값
+- $\{z^{(l)}\}_{l=1}^{L}$: 모든 관측값 x에 대해서 $q_\phi(z|x)$ 분포에서 sampling된 값
 
 그런데, 이렇게 stochastic sampling을 이용해 값을 추정하게 되면 미분 불가능하게 되어 backpropagation이 되지 않아 학습이 불가능하다. 이를 해결하기 위해 분포 $q_\phi(z|x)$를 reparameterization trick을 이용해 다음과 같이 deterministic한 함수 식으로 변경하여 사용한다: 
 {{< rawhtml >}}
