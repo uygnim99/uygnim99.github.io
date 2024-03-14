@@ -164,6 +164,39 @@ $$
 > **reconstruction term**: 식 그대로 말로 풀면, "z의 분포가 $q_\phi(z|x)$ 일때의 $p_\theta(x|z)$의 기댓값"이다. 해석해보면 latent vector z로 변환했을 때, 이 값을 이용해 다시 x가 복원이 될 확률에 대한 기댓값이다. 결국, parameter $\phi$는 latent vector z를 잘 생성하도록, parameter $\theta$는 z에서 x로 잘 복원하도록 optimize하는 항으로 볼 수 있다.  
 > **prior matching term**: encoder $q_\phi(z|x)$가 latent prior $p(z)$와 얼마나 유사하냐를 의미한다. 이 항을 최소화 시키려면, $q_\phi(z|x)$가 $p(z)$의 분포와 유사하도록 optimize해야 한다. 
 
--240314-
+위 식에서 볼 수 있듯이, VAE에서는 ELBO를 최대화하는 과정은 reconstruction term을 크게 하고, prior matching term을 작게 하는 parameter $\phi$, $\theta$를 optimize하는 것과 같다. 
 
+VAE는 일반적으로 encoder($q_\phi(z|x)$)은 multivariate Gaussian으로 모델링 하고, prior($p(z)$)은 standard multivariate Gaussian으로 선택한다. 이를 수식으로 나타내면 다음과 같다: 
+{{< rawhtml >}}
+$$
+\begin{align}
+    q_\phi(z|x) &= \mathcal{N}(\mathbf{z}; \mathbf{\mu_\phi(x)}, \mathbf{\sigma_\phi^2(x)I}) \\
+    p(x) &= \mathcal{N}(z; \mathbf{0}, \mathbf{I})
+\end{align}
+$$
+{{< /rawhtml >}}
+
+이 수식을 이용하면 ELBO의 KL Divergence항은 직접 계산이 가능하고, reconstruction term의 경우 Monte Carlo Estimation을 이용해 계산할 수 있다. 위의 objective 식을 변경하면 다음과 같다:   
+{{< rawhtml >}}
+$$
+\begin{align}
+\begin{split}
+    \argmax_{\phi, \theta}\mathbb{E}_{q_\phi(z|x)}[\log{p_\theta(x|z)}] - D_{KL}(q_\phi(z|x)\ ||\ p(z)) \\
+    \approx \argmax_{\phi, \theta}\sum_{l=1}^L{\log{p_\theta(x|z^{(l)})}} - D_{KL}(q_\phi(z|x)\ ||\ p(z))
+\end{split}
+\end{align}
+$$
+{{< /rawhtml >}}  
+- $\{z^{(l)}\}_{l=1}^L$: 모든 관측값 x에 대해서 $q_\phi(z|x)$ 분포에서 sampling된 값
+
+그런데, 이렇게 stochastic sampling을 이용해 값을 추정하게 되면 미분 불가능하게 되어 backpropagation이 되지 않아 학습이 불가능하다. 이를 해결하기 위해 분포 $q_\phi(z|x)$를 reparameterization trick을 이용해 다음과 같이 deterministic한 함수 식으로 변경하여 사용한다: 
+{{< rawhtml >}}
+$$
+\begin{align}
+    \mathbf{z} = \mathbf{\mu_\phi(x)} + \mathbf{\sigma_\phi(x)\ \odot\ \epsilon}\quad\text{with}\  \epsilon\sim\mathcal{N}(\mathbf{\epsilon; 0, I})
+\end{align}
+$$
+{{< /rawhtml >}}
+
+- $\odot$
 
