@@ -149,7 +149,7 @@ $\log{p(x)}$은 parameter $\phi$에 영향을 받지 않기 때문에 값이 변
 
 ### Variational Autoencoders (VAE)
 
-<img src="/images/diffusion/2024-03-12-understanding-diffusion-model/figure1.png"/>
+<img src="/images/diffusion/2024-03-12-understanding-diffusion-model/figure1.png" width="50%"/>
 
 생성모델의 한 종류로, encoder(**$q_\phi(z|x)$**)을 통해 sample data를 latent vector로 변환하고, 이를 다시 decoder(**$p_\theta(x|z)$**)을 통해 본래의 sample data를 복원하는 과정을 통해 학습을 진행한다. 그리고 latent vector을 조절해 decoder을 거쳐 새로운 데이터를 sampling 할 수 있다. 이때, VAE는 ELBO를 직접 최대화하는 방식으로 optimize한다. ELBO항을 정리하면 다음과 같다: 
 
@@ -190,7 +190,7 @@ $$
 $$
 {{< /rawhtml >}}  
 
-- ${[z]}_{l=1}^L$: 모든 관측값 x에 대해서 분포 $q_\phi(z|x)$에서 sampling된 값 
+- ${[z^{(l)}]}_{l=1}^L$: 모든 관측값 x에 대해서 분포 $q_\phi(z|x)$에서 sampling된 값 
 
 그런데, 이렇게 stochastic sampling을 이용해 값을 추정하게 되면 미분 불가능하게 되어 backpropagation이 되지 않아 학습이 불가능하다. 이를 해결하기 위해 분포 $q_\phi(z|x)$를 reparameterization trick을 이용해 다음과 같이 deterministic한 함수 식으로 변경하여 사용한다:  
 {{< rawhtml >}}
@@ -201,5 +201,7 @@ $$
 $$
 {{< /rawhtml >}}
 
-- $\odot$: ${[z^{(l)}]}_{l=1}^L$모든 관측값 x에 대해서 분포 $q_\phi(z|x)$에서 sampling된 값 
+- $\odot$: element-wise product
+
+
 
