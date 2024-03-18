@@ -223,8 +223,8 @@ $$
 $$
 \begin{align}
     \log{p(x)} &= \log{\int{p(x,z_{1:T}})dz_{1:T}} \\
-    &= \log{\int{\cfrac{p(x,z_{1:T})q_\phi(z_{1:T|x})}{q_\phi(z_{1:T|x})}dz_{1:T}}} \\
-    &= \log{\mathbb{E}_{q_\phi(z_{1:T}|x)}\bigg[\cfrac{p(x,z_{1:T})}{q_\phi(z_{1:T|x})}\bigg]} \\ &\geq \mathbb{E}_{q_\phi(z_{1:T}|x)}\bigg[\log{\cfrac{p(x,z_{1:T})}{q_\phi(z_{1:T|x})}}\bigg] \\
+    &= \log{\int{\cfrac{p(x,z_{1:T})q_\phi(z_{1:T}|x)}{q_\phi(z_{1:T}|x)}dz_{1:T}}} \\
+    &= \log{\mathbb{E}_{q_\phi(z_{1:T}|x)}\bigg[\cfrac{p(x,z_{1:T})}{q_\phi(z_{1:T}|x)}\bigg]} \\ &\geq \mathbb{E}_{q_\phi(z_{1:T}|x)}\bigg[\log{\cfrac{p(x,z_{1:T})}{q_\phi(z_{1:T}|x)}}\bigg] \\
 \end{align}
 $$
 {{< /rawhtml >}}
@@ -233,3 +233,32 @@ $$
 
 <img src="/images/diffusion/2024-03-12-understanding-diffusion-model/figure3.png" width="50%"/>
 
+VDM은 위에서 설명한 Markovian HVAE에 세가지 조건이 붙은 모델이다:
+- latent의 차원이 data의 차원과 같다 (=shape 같음)
+- latent encoder은 linear Gaussian model이다. 
+- latent encoder의 Gaussian model의 hyperparameter은 timestep $t$마다 다르며, 최종 latent인 $x_T$는 standard Gaussian분포를 따른다. 
+
+첫번제 제약조건에서, 우리는 이제 original data와 latent를 모두 $x_t$로 표현할 수 있다. $t=0$일때 true data, $t \in [1, T]$이면 latent variable. 또한, 두번째 조건에서 각각의 Gaussian encoder의 평균($\mu_t(x_t) = \sqrt{\alpha_t}x_{t-1}$)과 표준편차($\sum_t{x_t} = (1-\alpha_t)\mathbf{I}$)를 hyperparameter로 설정하거나 learnable parameter로 설정할 수 있다. 세번째 조건에서, 마지막 latent인 $p(x_T)$가 standard Gaussian임을 확인할 수 있다. encoder와 joint distribution을 식으로 표현하면 다음과 같다: 
+{{< rawhtml >}}
+$$
+\begin{align}
+    q(x_t|x_{t-1}) &= \mathcal{N}(x_t;\sqrt{\alpha_t}x_{t-1},(1-\alpha_t)\mathbf{I}) \\
+    p(x_{0:T}) &= p(x_T)\prod_{t=1}^Tp_\theta(x_{t-1}|x_t) \\
+    \text{where}\nonumber \\
+    p(x_T) &= \mathcal{N}(x_T;\mathbf{0, I})
+\end{align}
+$$
+{{< /rawhtml >}}
+
+encoder의 경우 parameter $\phi$가 더이상 없기 때문에 학습이 필요하지 않는다. sampling의 경우 Gaussian noise $p(x_T)$에서 $p_\theta(x_{t-1}|x_t)$을 이용해 denoising을 거쳐 $x_0$을 얻을 수 있다. 
+
+HVAE와 마찬가지로, VDM도 ELBO를 최대화함으로써 모델을 최적화할 수 있다: 
+{{< rawhtml >}}
+$$
+\begin{align}
+    \log{p(x)} &= \log{\int{p(x_{0:T}})dx_{1:T}} \\
+    &= \log{\int{\cfrac{p(x_{0:T})q_\phi(x_{1:T}|x_0)}{q(x_{1:T}|x_0)}dx_{1:T}}} \\
+    &= \log{\mathbb{E}_{q(x_{1:T}|x_0)}\bigg[\cfrac{p(x_{0:T})}{q(x_{1:T}|x_0)}\bigg]} \\ &\geq \mathbb{E}_{q(z_{1:T}|x)}\bigg[\log{\cfrac{p(x_{0:T})}{q(x_{1:T}|x_0)}}\bigg] \\
+\end{align}
+$$
+{{< /rawhtml >}}
