@@ -203,6 +203,33 @@ $$
 
 - $\odot$: element-wise product
 
+### Hierarchical Variational Autoencoders (HVAE)
+
+<img src="/images/diffusion/2024-03-12-understanding-diffusion-model/figure2.png" width="50%"/>
 
 
+VAE에서 확장하여 여러 단계의 latent variable을 갖는 모델이다. 이때 latent variable($z_t$)이 직전 단계의 latent($z_{t-1}$)에만 영향을 받으면 Markovian HVAE (MHVAE)라고 부른다. joint distribution과 posterior을 식으로 나타내면 다음과 같다: 
+{{< rawhtml >}}
+$$
+\begin{align}
+    p(x,z_{1:T}) &= p(z_T)p_\theta(x|z_1)\prod_{t=2}^Tp_\theta(z_{t-1}|z_t) \\
+    q_\phi(z_{1:T}|x) &= q_\phi(z_1|x)\prod_{t=2}^Tq_\phi(z_t|z_{t-1})
+\end{align}
+$$
+{{< /rawhtml >}}
+
+그렇게 되면 ELBO는 다음과 같이 표현할 수 있다: 
+{{< rawhtml >}}
+$$
+\begin{align}
+    \log{p(x)} &= \log{\int{p(x,z_{1:T}})dz_{1:T}} \\
+    &= \log{\int{\cfrac{p(x,z_{1:T})q_\phi(z_{1:T|x})}{q_\phi(z_{1:T|x})}dz_{1:T}}} \\
+    &= \log{\mathbb{E}_{q_\phi(z_{1:T}|x)}\bigg[\cfrac{p(x,z_{1:T})}{q_\phi(z_{1:T|x})}\bigg]} \\ &\geq \mathbb{E}_{q_\phi(z_{1:T}|x)}\bigg[\log{\cfrac{p(x,z_{1:T})}{q_\phi(z_{1:T|x})}}\bigg] \\
+\end{align}
+$$
+{{< /rawhtml >}}
+
+### Variational Diffusion Models (VDM)
+
+<img src="/images/diffusion/2024-03-12-understanding-diffusion-model/figure3.png" width="50%"/>
 
