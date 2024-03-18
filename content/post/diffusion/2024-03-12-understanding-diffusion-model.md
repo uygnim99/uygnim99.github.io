@@ -259,6 +259,7 @@ $$
     \log{p(x)} &= \log{\int{p(x_{0:T}})dx_{1:T}} \\
     &= \log{\int{\cfrac{p(x_{0:T})q_\phi(x_{1:T}|x_0)}{q(x_{1:T}|x_0)}dx_{1:T}}} \\
     &= \log{\mathbb{E}_{q(x_{1:T}|x_0)}\bigg[\cfrac{p(x_{0:T})}{q(x_{1:T}|x_0)}\bigg]} \\ &\geq \mathbb{E}_{q(z_{1:T}|x)}\bigg[\log{\cfrac{p(x_{0:T})}{q(x_{1:T}|x_0)}}\bigg] \\
+    ...
 \end{align}
 $$
 {{< /rawhtml >}}
