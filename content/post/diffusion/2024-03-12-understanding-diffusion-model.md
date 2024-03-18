@@ -199,5 +199,5 @@ $$
 $$
 {{< /rawhtml >}}
 
-- $\odot$: 
+- $\odot$: 모든 관측값 x에 대해서 분포 $q_\phi(z|x)$에서 sampling된 값 
 
