@@ -149,6 +149,8 @@ $\log{p(x)}$은 parameter $\phi$에 영향을 받지 않기 때문에 값이 변
 
 ### Variational Autoencoders (VAE)
 
+<img src="/images/diffusion/2024-03-12-understanding-diffusion-model/figure1.png"/>
+
 생성모델의 한 종류로, encoder(**$q_\phi(z|x)$**)을 통해 sample data를 latent vector로 변환하고, 이를 다시 decoder(**$p_\theta(x|z)$**)을 통해 본래의 sample data를 복원하는 과정을 통해 학습을 진행한다. 그리고 latent vector을 조절해 decoder을 거쳐 새로운 데이터를 sampling 할 수 있다. 이때, VAE는 ELBO를 직접 최대화하는 방식으로 optimize한다. ELBO항을 정리하면 다음과 같다: 
 
 {{< rawhtml >}}
