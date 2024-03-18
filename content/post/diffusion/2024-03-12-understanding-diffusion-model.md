@@ -205,7 +205,7 @@ $$
 
 ### Hierarchical Variational Autoencoders (HVAE)
 
-<img src="/images/diffusion/2024-03-12-understanding-diffusion-model/figure2.png" width="50%"/>
+<img src="/images/diffusion/2024-03-12-understanding-diffusion-model/figure2.png" width="80%"/>
 
 
 VAE에서 확장하여 여러 단계의 latent variable을 갖는 모델이다. 이때 latent variable($z_t$)이 직전 단계의 latent($z_{t-1}$)에만 영향을 받으면 Markovian HVAE (MHVAE)라고 부른다. joint distribution과 posterior을 식으로 나타내면 다음과 같다: 
@@ -231,7 +231,7 @@ $$
 
 ### Variational Diffusion Models (VDM)
 
-<img src="/images/diffusion/2024-03-12-understanding-diffusion-model/figure3.png" width="50%"/>
+<img src="/images/diffusion/2024-03-12-understanding-diffusion-model/figure3.png" width="80%"/>
 
 VDM은 위에서 설명한 Markovian HVAE에 세가지 조건이 붙은 모델이다:
 - latent의 차원이 data의 차원과 같다 (=shape 같음)
