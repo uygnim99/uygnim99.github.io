@@ -257,7 +257,7 @@ $$
 \begin{aligned}
     \log{p(x)} &= \log{\int{p(x_{0:T})dx_{1:T}}} \\
     &\cdots \\ 
-    &= \underbrace{\mathbb{E}_{q(x_{1:T}|x_0)}[\log{p_\theta(x_0|x_1)}]}_{\footnotesize\mathrm{reconstruction \ term}} - \underbrace{\mathbb{E}_{q(x_{T-1}|x_0)}[D_{KL}(q(x_T|x_{T-1})\ ||\ p(x_T))]}_{\footnotesize\mathrm{prior \ matching \ term}} \\
+    &= \underbrace{\mathbb{E}_{q(x_{1}|x_0)}[\log{p_\theta(x_0|x_1)}]}_{\footnotesize\mathrm{reconstruction \ term}} - \underbrace{\mathbb{E}_{q(x_{T-1}|x_0)}[D_{KL}(q(x_T|x_{T-1})\ ||\ p(x_T))]}_{\footnotesize\mathrm{prior \ matching \ term}} \\
     &\qquad- \sum_{t=1}^{T-1}\underbrace{\mathbb{E}_{q(x_{t-1}, x_{t+1}|x_0)}[D_{KL}(q(x_t|x_{t-1})\ ||\ p_\theta(x_t|x_{t+1}))]}_{\footnotesize\mathrm{consistency \ term}} \\
 \end{aligned}
 $$
@@ -278,7 +278,7 @@ $$
     &= \mathbb{E}_{q(x_{1:T}|x_0)}[\log{p_\theta(x_0|x_1)}] + \mathbb{E}_{q(x_{1:T}|x_0)}\bigg[\log{\cfrac{p(x_T)}{q(x_T|x_{T-1})}}\bigg] + \mathbb{E}_{q(x_{1:T}|x_0)}\bigg[\sum_{t=1}^{T-1}\log{\cfrac{p_\theta(x_t|x_{t+1})}{q(x_t|x_{t-1})}}\bigg] \\
     &= \mathbb{E}_{q(x_{1:T}|x_0)}[\log{p_\theta(x_0|x_1)}] + \mathbb{E}_{q(x_{1:T}|x_0)}\bigg[\log{\cfrac{p(x_T)}{q(x_T|x_{T-1})}}\bigg] + \sum_{t=1}^{T-1}\mathbb{E}_{q(x_{1:T}|x_0)}\bigg[\log{\cfrac{p_\theta(x_t|x_{t+1})}{q(x_t|x_{t-1})}}\bigg] \\
     &= \mathbb{E}_{q(x_{1:T}|x_0)}[\log{p_\theta(x_0|x_1)}] + \mathbb{E}_{q(x_{T-1}, x_T|x_0)}\bigg[\log{\cfrac{p(x_T)}{q(x_T|x_{T-1})}}\bigg] + \sum_{t=1}^{T-1}\mathbb{E}_{q(x_{t-1}, x_t, x_{t+1}|x_0)}\bigg[\log{\cfrac{p_\theta(x_t|x_{t+1})}{q(x_t|x_{t-1})}}\bigg] \\
-    &= \underbrace{\mathbb{E}_{q(x_{1:T}|x_0)}[\log{p_\theta(x_0|x_1)}]}_{\footnotesize\mathrm{reconstruction \ term}} - \underbrace{\mathbb{E}_{q(x_{T-1}|x_0)}[D_{KL}(q(x_T|x_{T-1})\ ||\ p(x_T))]}_{\footnotesize\mathrm{prior \ matching \ term}} \\
+    &= \underbrace{\mathbb{E}_{q(x_{1}|x_0)}[\log{p_\theta(x_0|x_1)}]}_{\footnotesize\mathrm{reconstruction \ term}} - \underbrace{\mathbb{E}_{q(x_{T-1}|x_0)}[D_{KL}(q(x_T|x_{T-1})\ ||\ p(x_T))]}_{\footnotesize\mathrm{prior \ matching \ term}} \\
     &\qquad- \sum_{t=1}^{T-1}\underbrace{\mathbb{E}_{q(x_{t-1}, x_{t+1}|x_0)}[D_{KL}(q(x_t|x_{t-1})\ ||\ p_\theta(x_t|x_{t+1}))]}_{\footnotesize\mathrm{consistency \ term}} \\
 \end{aligned}
 $$
@@ -289,8 +289,52 @@ $$
 > prior matching term: 마지막 latent encoder와 Gaussian 분포의 유사도. parameter가 없기 때문에 학습되지 않고, optimal할 경우 이 값은 0이다.  
 > consistency term: $x_{t-1}$에서의 encoder와 $x_{t+1}$에서의 decoder의 분포도가 같아지도록 학습해야 $D_{KL} \rightarrow 0$으로 수렴한다. 
 
-<img src="/images/diffusion/2024-03-12-understanding-diffusion-model/figure3.png" width="80%"/>
+<img src="/images/diffusion/2024-03-12-understanding-diffusion-model/figure4.png" width="80%"/>
 
 consistency term을 그림으로 위와 같이 나타낼 수 있다. 핑크색 encoder와 초록색 decoder가 같은 $x_t$분포도를 가질 수 있도록 학습하는 것이 이 term을 최소화시킬 수 있다. 또한 ELBO 식 전체에서 다른 두개의 term에 비해 consistency term의 비중이 매우 크기 때문에, 이 값을 줄이는 것이 핵심이고, ELBO를 최대화 시키게 된다. 
 
-그런데, 위와 같이 consistency term을 나타낼 경우,  
+그런데, 위와 같이 두개의 random variable($x_{t-1}, x_{t+1}$)을 이용해서 consistency term을 나타내면 이를 이용해 최적화한 ELBO가 suboptimal하게 될 수 있다. 그래서 ELBO식을 하나의 random variable을 이용해서 나타내보자. encoder $q(x_t|x_{t-1})$은 Markov property에 의해 $q(x_t|x_{t-1}, x_0)$으로 나타낼 수 있고, 이 식은 Bayes rule을 이용해 다음과 같이 변경할 수 있다:  
+{{< rawhtml >}}
+$$
+\begin{aligned}
+    q(x_t|x_{t-1}, x_0) = \cfrac{q(x_{t-1}|x_t,x_0)q(x_t|x_0)}{q(x_{t-1}|x_0)}
+\end{aligned}
+$$
+{{< /rawhtml >}}  
+
+이를 이용해 ELBO를 다음과 같이 나타낼 수 있다:  
+{{< rawhtml >}}
+$$
+\begin{aligned}
+    \log{p(x)} 
+    &\geq \mathbb{E}_{q(x_{1:T}|x_0)}\bigg[\log{\cfrac{p(x_{0:T})}{q(x_{1:T}|x_0)}}\bigg] \\
+    &=\mathbb{E}_{q(x_{1:T}|x_0)}\bigg[\log{\cfrac{p(x_T)\prod_{t=1}^Tp_\theta(x_{t-1}|x_t)}{\prod_{t=1}^Tq(x_t|x_{t-1})}}\bigg] \\
+    &= \mathbb{E}_{q(x_{1:T}|x_0)}\bigg[\log{\cfrac{p(x_T)p_\theta(x_0|x_1)\prod_{t=2}^Tp_\theta(x_{t-1}|x_t)}{q(x_1|x_0)\prod_{t=2}^{T}q(x_t|x_{t-1})}}\bigg] \\
+    &= \mathbb{E}_{q(x_{1:T}|x_0)}\bigg[\log{\cfrac{p(x_T)p_\theta(x_0|x_1)\prod_{t=2}^Tp_\theta(x_{t-1}|x_t)}{q(x_1|x_0)\prod_{t=2}^{T}q(x_t|x_{t-1}, x_0)}}\bigg] \\
+    &= \mathbb{E}_{q(x_{1:T}|x_0)}\bigg[\log{\cfrac{p(x_T)p_\theta(x_0|x_1)}{q(x_1|x_0)}}\bigg] + \mathbb{E}_{q(x_{1:T}|x_0)}\bigg[\log{\prod_{t=2}^{T}\cfrac{p_\theta(x_{t-1}|x_t)}{q(x_t|x_{t-1}, x_0)}}\bigg] \\
+    &= \mathbb{E}_{q(x_{1:T}|x_0)}\bigg[\log{\cfrac{p(x_T)p_\theta(x_0|x_1)}{q(x_1|x_0)}}\bigg] + \mathbb{E}_{q(x_{1:T}|x_0)}\bigg[\log{\prod_{t=2}^{T}\cfrac{p_\theta(x_{t-1}|x_t)}{\tiny\cfrac{q(x_{t-1}|x_t,x_0)q(x_t|x_0)}{q(x_{t-1}|x_0)}}}\bigg] \\
+    &\cdots \\
+    &= \underbrace{\mathbb{E}_{q(x_{1}|x_0)}[\log{p_\theta(x_0|x_1)}]}_{\footnotesize\mathrm{reconstruction \ term}} - \underbrace{[D_{KL}(q(x_T|x_0)\ ||\ p(x_T))]}_{\footnotesize\mathrm{prior \ matching \ term}} \\
+    &\qquad- \sum_{t=1}^{T-1}\underbrace{\mathbb{E}_{q(x_t|x_0)}[D_{KL}(q(x_{t-1}|x_t,x_0)\ ||\ p_\theta(x_{t-1}|x_t))]}_{\footnotesize\mathrm{consistency \ term}} \\
+\end{aligned}
+$$
+{{< /rawhtml >}} 
+<details>
+<summary style="cursor: pointer;"> 증명) </summary>
+{{< rawhtml >}}
+$$
+\begin{aligned}
+    \log{p(x)} 
+    &\geq \mathbb{E}_{q(x_{1:T}|x_0)}\bigg[\log{\cfrac{p(x_{0:T})}{q(x_{1:T}|x_0)}}\bigg] \\
+    &=\mathbb{E}_{q(x_{1:T}|x_0)}\bigg[\log{\cfrac{p(x_T)\prod_{t=1}^Tp_\theta(x_{t-1}|x_t)}{\prod_{t=1}^Tq(x_t|x_{t-1})}}\bigg] \\
+    &= \mathbb{E}_{q(x_{1:T}|x_0)}\bigg[\log{\cfrac{p(x_T)p_\theta(x_0|x_1)\prod_{t=2}^Tp_\theta(x_{t-1}|x_t)}{q(x_1|x_0)\prod_{t=2}^{T}q(x_t|x_{t-1})}}\bigg] \\
+    &= \mathbb{E}_{q(x_{1:T}|x_0)}\bigg[\log{\cfrac{p(x_T)p_\theta(x_0|x_1)\prod_{t=2}^Tp_\theta(x_{t-1}|x_t)}{q(x_1|x_0)\prod_{t=2}^{T}q(x_t|x_{t-1}, x_0)}}\bigg] \\
+    &= \mathbb{E}_{q(x_{1:T}|x_0)}\bigg[\log{\cfrac{p(x_T)p_\theta(x_0|x_1)}{q(x_1|x_0)}}\bigg] + \mathbb{E}_{q(x_{1:T}|x_0)}\bigg[\log{\prod_{t=2}^{T}\cfrac{p_\theta(x_{t-1}|x_t)}{q(x_t|x_{t-1}, x_0)}}\bigg] \\
+    &= \mathbb{E}_{q(x_{1:T}|x_0)}\bigg[\log{\cfrac{p(x_T)p_\theta(x_0|x_1)}{q(x_1|x_0)}}\bigg] + \mathbb{E}_{q(x_{1:T}|x_0)}\bigg[\log{\prod_{t=2}^{T}\cfrac{p_\theta(x_{t-1}|x_t)}{\tiny\cfrac{q(x_{t-1}|x_t,x_0)q(x_t|x_0)}{q(x_{t-1}|x_0)}}}\bigg] \\
+    &\cdots \\
+    &= \underbrace{\mathbb{E}_{q(x_{1}|x_0)}[\log{p_\theta(x_0|x_1)}]}_{\footnotesize\mathrm{reconstruction \ term}} - \underbrace{[D_{KL}(q(x_T|x_0)\ ||\ p(x_T))]}_{\footnotesize\mathrm{prior \ matching \ term}} \\
+    &\qquad- \sum_{t=1}^{T-1}\underbrace{\mathbb{E}_{q(x_t|x_0)}[D_{KL}(q(x_{t-1}|x_t,x_0)\ ||\ p_\theta(x_{t-1}|x_t))]}_{\footnotesize\mathrm{consistency \ term}} \\
+\end{aligned}
+$$
+{{< /rawhtml >}} 
+</details>
