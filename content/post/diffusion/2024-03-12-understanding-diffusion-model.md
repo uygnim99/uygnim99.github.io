@@ -37,8 +37,8 @@ searchHidden: false
 ---
 <style>
 r { color: Red }
-o { color: Orange }
-b { color: Blue }
+or { color: Orange }
+bl { color: Blue }
 </style>
 
 ### Understanding Diffusion Model: The Unified Perspective  
@@ -254,7 +254,7 @@ encoder의 경우 parameter $\phi$가 더이상 없기 때문에 학습이 필�
 HVAE와 마찬가지로, VDM도 ELBO를 최대화함으로써 모델을 최적화할 수 있다: 
 {{< rawhtml >}}
 $$
-\begin{align}
+\begin{aligned}
     \log{p(x)} &= \log{\int{p(x_{0:T})dx_{1:T}}} \\
     &= \log{\int{\cfrac{p(x_{0:T})q(x_{1:T}|x_0)}{q(x_{1:T}|x_0)}dx_{1:T}}} \\
     &= \log{\mathbb{E}_{q(x_{1:T}|x_0)}\bigg[\cfrac{p(x_{0:T})}{q(x_{1:T}|x_0)}\bigg]} \\ 
@@ -268,6 +268,28 @@ $$
     &= \mathbb{E}_{q(x_{1:T}|x_0)}[\log{p_\theta(x_0|x_1)}] + \mathbb{E}_{q(x_{T-1}, x_T|x_0)}\bigg[\log{\cfrac{p(x_T)}{q(x_T|x_{T-1})}}\bigg] + \sum_{t=1}^{T-1}\mathbb{E}_{q(x_{t-1}, x_t, x_{t+1}|x_0)}\bigg[\log{\cfrac{p_\theta(x_t|x_{t+1})}{q(x_t|x_{t-1})}}\bigg] \\
     &= \underbrace{\mathbb{E}_{q(x_{1:T}|x_0)}[\log{p_\theta(x_0|x_1)}]}_{\footnotesize\mathrm{reconstruction \ term}} - \underbrace{\mathbb{E}_{q(x_{T-1}|x_0)}[D_{KL}(q(x_T|x_{T-1})\ ||\ p(x_T))]}_{\footnotesize\mathrm{prior \ matching \ term}} \\
     &\qquad- \sum_{t=1}^{T-1}\underbrace{\mathbb{E}_{q(x_{t-1}, x_{t+1}|x_0)}[D_{KL}(q(x_t|x_{t-1})\ ||\ p_\theta(x_t|x_{t+1}))]}_{\footnotesize\mathrm{consistency \ term}} \\
-\end{align}
+\end{aligned}
 $$
 {{< /rawhtml >}}  
+<details>
+<summary style="cursor: pointer;"> 증명) </summary>
+{{< rawhtml >}}
+$$
+\begin{aligned}
+    \log{p(x)} &= \log{\int{p(x_{0:T})dx_{1:T}}} \\
+    &= \log{\int{\cfrac{p(x_{0:T})q(x_{1:T}|x_0)}{q(x_{1:T}|x_0)}dx_{1:T}}} \\
+    &= \log{\mathbb{E}_{q(x_{1:T}|x_0)}\bigg[\cfrac{p(x_{0:T})}{q(x_{1:T}|x_0)}\bigg]} \\ 
+    &\geq \mathbb{E}_{q(x_{1:T}|x_0)}\bigg[\log{\cfrac{p(x_{0:T})}{q(x_{1:T}|x_0)}}\bigg] \\
+    &=\mathbb{E}_{q(x_{1:T}|x_0)}\bigg[\log{\cfrac{p(x_T)\prod_{t=1}^Tp_\theta(x_{t-1}|x_t)}{\prod_{t=1}^Tq(x_t|x_{t-1})}}\bigg] \\
+    &= \mathbb{E}_{q(x_{1:T}|x_0)}\bigg[\log{\cfrac{p(x_T)\textcolor{red}{p_\theta(x_0|x_1)}\prod_{t=\textcolor{red}{2}}^Tp_\theta(x_{t-1}|x_t)}{\textcolor{red}{q(x_T|x_{T-1})}\prod_{t=1}^{\textcolor{red}{T-1}}q(x_t|x_{t-1})}}\bigg] \\
+    &= \mathbb{E}_{q(x_{1:T}|x_0)}\bigg[\log{\cfrac{p(x_T)p_\theta(x_0|x_1)\prod_{t=1}^{T-1}p_\theta(x_{t}|x_{t+1})}{q(x_T|x_{T-1})\prod_{t=1}^{T-1}q(x_t|x_{t-1})}}\bigg] \\
+    &= \mathbb{E}_{q(x_{1:T}|x_0)}\bigg[\log{\cfrac{p(x_T)p_\theta(x_0|x_1)}{q(x_T|x_{T-1})}}\bigg] + \mathbb{E}_{q(x_{1:T}|x_0)}\bigg[\log{\prod_{t=1}^{T-1}\cfrac{p_\theta(x_t|x_{t+1})}{q(x_t|x_{t-1})}}\bigg] \\
+    &= \mathbb{E}_{q(x_{1:T}|x_0)}[\log{p_\theta(x_0|x_1)}] + \mathbb{E}_{q(x_{1:T}|x_0)}\bigg[\log{\cfrac{p(x_T)}{q(x_T|x_{T-1})}}\bigg] + \mathbb{E}_{q(x_{1:T}|x_0)}\bigg[\sum_{t=1}^{T-1}\log{\cfrac{p_\theta(x_t|x_{t+1})}{q(x_t|x_{t-1})}}\bigg] \\
+    &= \mathbb{E}_{q(x_{1:T}|x_0)}[\log{p_\theta(x_0|x_1)}] + \mathbb{E}_{q(x_{1:T}|x_0)}\bigg[\log{\cfrac{p(x_T)}{q(x_T|x_{T-1})}}\bigg] + \sum_{t=1}^{T-1}\mathbb{E}_{q(x_{1:T}|x_0)}\bigg[\log{\cfrac{p_\theta(x_t|x_{t+1})}{q(x_t|x_{t-1})}}\bigg] \\
+    &= \mathbb{E}_{q(x_{1:T}|x_0)}[\log{p_\theta(x_0|x_1)}] + \mathbb{E}_{q(x_{T-1}, x_T|x_0)}\bigg[\log{\cfrac{p(x_T)}{q(x_T|x_{T-1})}}\bigg] + \sum_{t=1}^{T-1}\mathbb{E}_{q(x_{t-1}, x_t, x_{t+1}|x_0)}\bigg[\log{\cfrac{p_\theta(x_t|x_{t+1})}{q(x_t|x_{t-1})}}\bigg] \\
+    &= \underbrace{\mathbb{E}_{q(x_{1:T}|x_0)}[\log{p_\theta(x_0|x_1)}]}_{\footnotesize\mathrm{reconstruction \ term}} - \underbrace{\mathbb{E}_{q(x_{T-1}|x_0)}[D_{KL}(q(x_T|x_{T-1})\ ||\ p(x_T))]}_{\footnotesize\mathrm{prior \ matching \ term}} \\
+    &\qquad- \sum_{t=1}^{T-1}\underbrace{\mathbb{E}_{q(x_{t-1}, x_{t+1}|x_0)}[D_{KL}(q(x_t|x_{t-1})\ ||\ p_\theta(x_t|x_{t+1}))]}_{\footnotesize\mathrm{consistency \ term}} \\
+\end{aligned}
+$$
+{{< /rawhtml >}} 
+</details>
