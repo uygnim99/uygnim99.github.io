@@ -310,7 +310,7 @@ $$
     &\geq \mathbb{E}_{q(x_{1:T}|x_0)}\bigg[\log{\cfrac{p(x_{0:T})}{q(x_{1:T}|x_0)}}\bigg] \\
     &\cdots \\
     &= \underbrace{\mathbb{E}_{q(x_{1}|x_0)}[\log{p_\theta(x_0|x_1)}]}_{\footnotesize\mathrm{reconstruction \ term}} - \underbrace{[D_{KL}(q(x_T|x_0)\ ||\ p(x_T))]}_{\footnotesize\mathrm{prior \ matching \ term}} \\
-    &\qquad- \sum_{t=1}^{T-1}\underbrace{\mathbb{E}_{q(x_t|x_0)}[D_{KL}(q(x_{t-1}|x_t,x_0)\ ||\ p_\theta(x_{t-1}|x_t))]}_{\footnotesize\mathrm{consistency \ term}} \\
+    &\qquad- \sum_{t=1}^{T-1}\underbrace{\mathbb{E}_{q(x_t|x_0)}[D_{KL}(q(x_{t-1}|x_t,x_0)\ ||\ p_\theta(x_{t-1}|x_t))]}_{\footnotesize\mathrm{denoising \ term}} \\
 \end{aligned}
 $$
 {{< /rawhtml >}} 
@@ -333,8 +333,62 @@ $$
     &= \mathbb{E}_{q(x_{1:T}|x_0)}[\log{p_\theta(x_0|x_1)}] + \mathbb{E}_{q(x_{1:T}|x_0)}[\log{\cfrac{p(x_T)}{q(x_T|x_0)}}] + \sum_{t=2}^{T}\mathbb{E}_{q(x_t, x_{t-1}|x_0)}\bigg[\log{\cfrac{p_\theta(x_{t-1}|x_t)}{q(x_{t-1}|x_t,x_0)}}\bigg]\\
     &= \mathbb{E}_{q(x_{1:T}|x_0)}[\log{p_\theta(x_0|x_1)}] + \mathbb{E}_{q(x_T|x_0)}[\log{\cfrac{p(x_T)}{q(x_T|x_0)}}] + \sum_{t=2}^{T}\mathbb{E}_{q(x_t, x_{t-1}|x_0)}\bigg[\log{\cfrac{p_\theta(x_{t-1}|x_t)}{q(x_{t-1}|x_t,x_0)}}\bigg]\\
     &= \underbrace{\mathbb{E}_{q(x_{1}|x_0)}[\log{p_\theta(x_0|x_1)}]}_{\footnotesize\mathrm{reconstruction \ term}} - \underbrace{[D_{KL}(q(x_T|x_0)\ ||\ p(x_T))]}_{\footnotesize\mathrm{prior \ matching \ term}} \\
-    &\qquad- \sum_{t=1}^{T-1}\underbrace{\mathbb{E}_{q(x_t|x_0)}[D_{KL}(q(x_{t-1}|x_t,x_0)\ ||\ p_\theta(x_{t-1}|x_t))]}_{\footnotesize\mathrm{consistency \ term}} \\
+    &\qquad- \sum_{t=1}^{T-1}\underbrace{\mathbb{E}_{q(x_t|x_0)}[D_{KL}(q(x_{t-1}|x_t,x_0)\ ||\ p_\theta(x_{t-1}|x_t))]}_{\footnotesize\mathrm{denoising \ term}} \\
 \end{aligned}
 $$
 {{< /rawhtml >}} 
 </details>
+
+> reconstruction term, prior matching term: 위에서 설명한 것과 같음.  
+> denoising term: ground truth denoising transition step $q(x_{t-1}|x_t, x_0)$과 유사해지도록 $p_\theta(x_{t-1}|x_t)$를 학습시켜야함.
+
+결국 ELBO를 최대화하기 위해서는 denoising term을 최소화해야 한다. 이때, q는 원래 encoder이다. 그래서 true $q(x_{t-1}|x_t, x_0)$을 바로 알지는 못하지만, 위에서 사용한 Bayes rule을 이용하여 다시 식을 다음과 같이 바꾸어준다: 
+{{< rawhtml >}}
+$$
+\begin{aligned}
+    q(x_{t-1}|x_t, x_0) = \cfrac{q(x_t|x_{t-1},x_0)q(x_{t-1}|x_0)}{q(x_t|x_0)} = \cfrac{q(x_t|x_{t-1})q(x_{t-1}|x_0)}{q(x_t|x_0)}
+\end{aligned}
+$$
+{{< /rawhtml >}}  
+
+$q(x_t|x_{t-1})$은 위에서 설명했듯이 $\mathcal{N}(x_t;\sqrt{\alpha_t}x_{t-1},(1-\alpha_t)\mathbf{I})$로 나타낼 수 있고, $q(x_{t-1}|x_0)$, $q(x_t|x_0)$은 식을 변형해서 다음과 같이 나타낼 수 있다:  
+{{< rawhtml >}}
+$$
+\begin{aligned}
+    x_t &= \sqrt{\alpha_t}x_{t-1} + \sqrt{1-\alpha_t}\epsilon_{t-1}^* \\
+    &\cdots \\
+    &=\sqrt{\bar\alpha_t}x_0 + \sqrt{1-\bar\alpha_t}\epsilon_0 \\
+    &\sim\mathcal{N}(x_t;\sqrt{\bar\alpha_t}x_0 ,(1-\bar\alpha_t)\mathbf{I})
+\end{aligned}
+$$
+{{< /rawhtml >}}   
+
+- $[\epsilon_t^*, \epsilon_t]_{t=1}^T \sim\mathcal{N}(\epsilon;\mathbf{0},\mathbf{I})$
+<details>
+<summary style="cursor: pointer;"> 유도과정) </summary>
+{{< rawhtml >}}
+$$
+\begin{aligned}
+    x_t &= \sqrt{\alpha_t}x_{t-1} + \sqrt{1-\alpha_t}\epsilon_{t-1}^* \\
+    &\cdots \\
+    &=\sqrt{\bar\alpha_t}x_0 + \sqrt{1-\bar\alpha_t}\epsilon_0 \\
+    &\sim\mathcal{N}(x_t;\sqrt{\bar\alpha_t}x_0 ,(1-\bar\alpha_t)\mathbf{I})
+\end{aligned}
+$$
+{{< /rawhtml >}}   
+</details>
+
+위에서 구한 식들을 이용해 $q(x_{t-1}|x_t, x_0)$에 대입하면 다음과 같다:  
+{{< rawhtml >}}
+$$
+\begin{aligned}
+    q(x_{t-1}|x_t, x_0) &= \cfrac{q(x_t|x_{t-1},x_0)q(x_{t-1}|x_0)}{q(x_t|x_0)} \\
+    &= \cfrac{\mathcal{N}(x_t;\sqrt{\alpha_t}x_{t-1},(1-\alpha_t)\mathbf{I})\mathcal{N}(x_{t-1};\sqrt{\bar\alpha_{t-1}}x_0 ,(1-\bar\alpha_{t-1})\mathbf{I})}{\mathcal{N}(x_t;\sqrt{\bar\alpha_t}x_0 ,(1-\bar\alpha_t)\mathbf{I})} \\ 
+    &\propto\cdots \\
+    &\propto \mathcal{N}(x_{t-1};\underbrace{\cfrac{\sqrt{\alpha_t}(1-\bar\alpha_{t-1})x_t + \sqrt{\bar\alpha_{t-1}}(1-\alpha_t)x_0}{1-\bar\alpha_t}}_{\mu_q(x_t,x_0)},\underbrace{\cfrac{(1-\alpha_t)(1-\bar\alpha_{t-1})}{1-\bar\alpha_t}\mathbf{I}}_{\sum_q(t)})
+\end{aligned}
+$$
+{{< /rawhtml >}}  
+
+
+
