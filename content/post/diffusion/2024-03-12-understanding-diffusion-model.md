@@ -263,7 +263,7 @@ $$
 $$
 {{< /rawhtml >}}  
 <details>
-<summary style="cursor: pointer;"> 증명) </summary>
+<summary style="cursor: pointer;"> 유도과정) </summary>
 {{< rawhtml >}}
 $$
 \begin{aligned}
@@ -308,11 +308,6 @@ $$
 \begin{aligned}
     \log{p(x)} 
     &\geq \mathbb{E}_{q(x_{1:T}|x_0)}\bigg[\log{\cfrac{p(x_{0:T})}{q(x_{1:T}|x_0)}}\bigg] \\
-    &=\mathbb{E}_{q(x_{1:T}|x_0)}\bigg[\log{\cfrac{p(x_T)\prod_{t=1}^Tp_\theta(x_{t-1}|x_t)}{\prod_{t=1}^Tq(x_t|x_{t-1})}}\bigg] \\
-    &= \mathbb{E}_{q(x_{1:T}|x_0)}\bigg[\log{\cfrac{p(x_T)p_\theta(x_0|x_1)\prod_{t=2}^Tp_\theta(x_{t-1}|x_t)}{q(x_1|x_0)\prod_{t=2}^{T}q(x_t|x_{t-1})}}\bigg] \\
-    &= \mathbb{E}_{q(x_{1:T}|x_0)}\bigg[\log{\cfrac{p(x_T)p_\theta(x_0|x_1)\prod_{t=2}^Tp_\theta(x_{t-1}|x_t)}{q(x_1|x_0)\prod_{t=2}^{T}q(x_t|x_{t-1}, x_0)}}\bigg] \\
-    &= \mathbb{E}_{q(x_{1:T}|x_0)}\bigg[\log{\cfrac{p(x_T)p_\theta(x_0|x_1)}{q(x_1|x_0)}}\bigg] + \mathbb{E}_{q(x_{1:T}|x_0)}\bigg[\log{\prod_{t=2}^{T}\cfrac{p_\theta(x_{t-1}|x_t)}{q(x_t|x_{t-1}, x_0)}}\bigg] \\
-    &= \mathbb{E}_{q(x_{1:T}|x_0)}\bigg[\log{\cfrac{p(x_T)p_\theta(x_0|x_1)}{q(x_1|x_0)}}\bigg] + \mathbb{E}_{q(x_{1:T}|x_0)}\bigg[\log{\prod_{t=2}^{T}\cfrac{p_\theta(x_{t-1}|x_t)}{\tiny\cfrac{q(x_{t-1}|x_t,x_0)q(x_t|x_0)}{q(x_{t-1}|x_0)}}}\bigg] \\
     &\cdots \\
     &= \underbrace{\mathbb{E}_{q(x_{1}|x_0)}[\log{p_\theta(x_0|x_1)}]}_{\footnotesize\mathrm{reconstruction \ term}} - \underbrace{[D_{KL}(q(x_T|x_0)\ ||\ p(x_T))]}_{\footnotesize\mathrm{prior \ matching \ term}} \\
     &\qquad- \sum_{t=1}^{T-1}\underbrace{\mathbb{E}_{q(x_t|x_0)}[D_{KL}(q(x_{t-1}|x_t,x_0)\ ||\ p_\theta(x_{t-1}|x_t))]}_{\footnotesize\mathrm{consistency \ term}} \\
@@ -320,7 +315,7 @@ $$
 $$
 {{< /rawhtml >}} 
 <details>
-<summary style="cursor: pointer;"> 증명) </summary>
+<summary style="cursor: pointer;"> 유도과정) </summary>
 {{< rawhtml >}}
 $$
 \begin{aligned}
@@ -329,9 +324,14 @@ $$
     &=\mathbb{E}_{q(x_{1:T}|x_0)}\bigg[\log{\cfrac{p(x_T)\prod_{t=1}^Tp_\theta(x_{t-1}|x_t)}{\prod_{t=1}^Tq(x_t|x_{t-1})}}\bigg] \\
     &= \mathbb{E}_{q(x_{1:T}|x_0)}\bigg[\log{\cfrac{p(x_T)p_\theta(x_0|x_1)\prod_{t=2}^Tp_\theta(x_{t-1}|x_t)}{q(x_1|x_0)\prod_{t=2}^{T}q(x_t|x_{t-1})}}\bigg] \\
     &= \mathbb{E}_{q(x_{1:T}|x_0)}\bigg[\log{\cfrac{p(x_T)p_\theta(x_0|x_1)\prod_{t=2}^Tp_\theta(x_{t-1}|x_t)}{q(x_1|x_0)\prod_{t=2}^{T}q(x_t|x_{t-1}, x_0)}}\bigg] \\
-    &= \mathbb{E}_{q(x_{1:T}|x_0)}\bigg[\log{\cfrac{p(x_T)p_\theta(x_0|x_1)}{q(x_1|x_0)}}\bigg] + \mathbb{E}_{q(x_{1:T}|x_0)}\bigg[\log{\prod_{t=2}^{T}\cfrac{p_\theta(x_{t-1}|x_t)}{q(x_t|x_{t-1}, x_0)}}\bigg] \\
-    &= \mathbb{E}_{q(x_{1:T}|x_0)}\bigg[\log{\cfrac{p(x_T)p_\theta(x_0|x_1)}{q(x_1|x_0)}}\bigg] + \mathbb{E}_{q(x_{1:T}|x_0)}\bigg[\log{\prod_{t=2}^{T}\cfrac{p_\theta(x_{t-1}|x_t)}{\tiny\cfrac{q(x_{t-1}|x_t,x_0)q(x_t|x_0)}{q(x_{t-1}|x_0)}}}\bigg] \\
-    &\cdots \\
+    &= \mathbb{E}_{q(x_{1:T}|x_0)}\bigg[\log{\cfrac{p(x_T)p_\theta(x_0|x_1)}{q(x_1|x_0)}} + \log{\prod_{t=2}^{T}\cfrac{p_\theta(x_{t-1}|x_t)}{q(x_t|x_{t-1}, x_0)}}\bigg] \\
+    &= \mathbb{E}_{q(x_{1:T}|x_0)}\Bigg[\log{\cfrac{p(x_T)p_\theta(x_0|x_1)}{q(x_1|x_0)}} + \log{\prod_{t=2}^{T}\cfrac{p_\theta(x_{t-1}|x_t)}{\tiny\cfrac{q(x_{t-1}|x_t,x_0)q(x_t|x_0)}{q(x_{t-1}|x_0)}}}\Bigg] \\
+    &= \mathbb{E}_{q(x_{1:T}|x_0)}\bigg[\log{\cfrac{p(x_T)p_\theta(x_0|x_1)}{q(x_1|x_0)}} + \log{\prod_{t=2}^{T}\cfrac{p_\theta(x_{t-1}|x_t)q(x_{t-1}|x_0)}{q(x_{t-1}|x_t,x_0)q(x_t|x_0)}}\bigg] \\
+    &= \mathbb{E}_{q(x_{1:T}|x_0)}\bigg[\log{\cfrac{p(x_T)p_\theta(x_0|x_1)}{q(x_1|x_0)}} + \log{\prod_{t=2}^{T}\cfrac{p_\theta(x_{t-1}|x_t)}{q(x_{t-1}|x_t,x_0)}} + \log{\prod_{t=2}^{T}\cfrac{q(x_{t-1}|x_0)}{q(x_t|x_0)}}\bigg]\\
+    &= \mathbb{E}_{q(x_{1:T}|x_0)}\bigg[\log{\cfrac{p(x_T)p_\theta(x_0|x_1)}{q(x_1|x_0)}} + \log{\prod_{t=2}^{T}\cfrac{p_\theta(x_{t-1}|x_t)}{q(x_{t-1}|x_t,x_0)}} + \log{\cfrac{q(x_1|x_0)}{q(x_T|x_0)}}\bigg]\\
+    &= \mathbb{E}_{q(x_{1:T}|x_0)}\bigg[\log{\cfrac{p(x_T)p_\theta(x_0|x_1)}{q(x_T|x_0)}} + \sum_{t=2}^{T}\log{\cfrac{p_\theta(x_{t-1}|x_t)}{q(x_{t-1}|x_t,x_0)}} \bigg]\\
+    &= \mathbb{E}_{q(x_{1:T}|x_0)}[\log{p_\theta(x_0|x_1)}] + \mathbb{E}_{q(x_{1:T}|x_0)}[\log{\cfrac{p(x_T)}{q(x_T|x_0)}}] + \sum_{t=2}^{T}\mathbb{E}_{q(x_t, x_{t-1}|x_0)}\bigg[\log{\cfrac{p_\theta(x_{t-1}|x_t)}{q(x_{t-1}|x_t,x_0)}}\bigg]\\
+    &= \mathbb{E}_{q(x_{1:T}|x_0)}[\log{p_\theta(x_0|x_1)}] + \mathbb{E}_{q(x_T|x_0)}[\log{\cfrac{p(x_T)}{q(x_T|x_0)}}] + \sum_{t=2}^{T}\mathbb{E}_{q(x_t, x_{t-1}|x_0)}\bigg[\log{\cfrac{p_\theta(x_{t-1}|x_t)}{q(x_{t-1}|x_t,x_0)}}\bigg]\\
     &= \underbrace{\mathbb{E}_{q(x_{1}|x_0)}[\log{p_\theta(x_0|x_1)}]}_{\footnotesize\mathrm{reconstruction \ term}} - \underbrace{[D_{KL}(q(x_T|x_0)\ ||\ p(x_T))]}_{\footnotesize\mathrm{prior \ matching \ term}} \\
     &\qquad- \sum_{t=1}^{T-1}\underbrace{\mathbb{E}_{q(x_t|x_0)}[D_{KL}(q(x_{t-1}|x_t,x_0)\ ||\ p_\theta(x_{t-1}|x_t))]}_{\footnotesize\mathrm{consistency \ term}} \\
 \end{aligned}
