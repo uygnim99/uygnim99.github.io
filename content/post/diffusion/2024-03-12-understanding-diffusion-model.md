@@ -390,5 +390,28 @@ $$
 $$
 {{< /rawhtml >}}  
 
+<details>
+<summary style="cursor: pointer;"> 유도과정) </summary>
+{{< rawhtml >}}
+$$
+\begin{aligned}
+    q(x_{t-1}|x_t, x_0) &= \cfrac{q(x_t|x_{t-1},x_0)q(x_{t-1}|x_0)}{q(x_t|x_0)} \\
+    &= \cfrac{\mathcal{N}(x_t;\sqrt{\alpha_t}x_{t-1},(1-\alpha_t)\mathbf{I})\mathcal{N}(x_{t-1};\sqrt{\bar\alpha_{t-1}}x_0 ,(1-\bar\alpha_{t-1})\mathbf{I})}{\mathcal{N}(x_t;\sqrt{\bar\alpha_t}x_0 ,(1-\bar\alpha_t)\mathbf{I})} \\ 
+    &\propto\cdots \\
+    &\propto \mathcal{N}(x_{t-1};\underbrace{\cfrac{\sqrt{\alpha_t}(1-\bar\alpha_{t-1})x_t + \sqrt{\bar\alpha_{t-1}}(1-\alpha_t)x_0}{1-\bar\alpha_t}}_{\mu_q(x_t,x_0)},\underbrace{\cfrac{(1-\alpha_t)(1-\bar\alpha_{t-1})}{1-\bar\alpha_t}\mathbf{I}}_{\sum_q(t)})
+\end{aligned}
+$$
+{{< /rawhtml >}}   
+</details>  
+
+위의 식에서 볼 수 있듯이, ground truth decoder도 Gaussian 형태로 표현할 수 있다는 것을 알 수 있다. 이를 이용해 $p_\theta(x_{t-1}|x_t)$도 Gaussian 분포를 따르도록 다음과 같이 모델링해 학습을 진행한다: 
+
+{{< rawhtml >}}
+$$
+\begin{aligned}
+    p_\theta(x_{t-1}|x_t) \sim \mathcal{N}(x_{t-1};\mu_\theta(x_t, t),\sigma_q^2(x)\mathbf{I})
+\end{aligned}
+$$
+{{< /rawhtml >}}  
 
 
