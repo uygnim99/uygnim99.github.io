@@ -365,7 +365,7 @@ $$
 
 - $[\epsilon_t^*, \epsilon_t]_{t=1}^T \sim\mathcal{N}(\epsilon;\mathbf{0},\mathbf{I})$
 <details>
-<summary style="cursor: pointer;"> 유도과정) </summary>
+<summary style="cursor: pointer;"> 유도과정(미완)) </summary>
 {{< rawhtml >}}
 $$
 \begin{aligned}
@@ -391,7 +391,7 @@ $$
 {{< /rawhtml >}}  
 
 <details>
-<summary style="cursor: pointer;"> 유도과정) </summary>
+<summary style="cursor: pointer;"> 유도과정(미완)) </summary>
 {{< rawhtml >}}
 $$
 \begin{aligned}
@@ -404,12 +404,81 @@ $$
 {{< /rawhtml >}}   
 </details>  
 
-위의 식에서 볼 수 있듯이, ground truth decoder도 Gaussian 형태로 표현할 수 있다는 것을 알 수 있다. 이를 이용해 $p_\theta(x_{t-1}|x_t)$도 Gaussian 분포를 따르도록 다음과 같이 모델링해 학습을 진행한다: 
+결국 매번 denoising step마다 $x_{t-1} \sim q(x_{t-1}|x_t, x_0)$ 분포를 따르고, 이는 평균 $\mu_q(x_t, x_0), 분산 $\sum_q(t)$의 gaussian 분포임을 확인할 수 있다.  
+> **$\mu_q(x_t, x_0)$**: $x_t, x_0$으로 구성된 함수  
+> **$\sum_q(t)$** $= \sigma_q^2(t)\mathbf{I}$ : coefficient $\alpha$로 이루어진 함수  
+
+이를 이용해 $p_\theta(x_{t-1}|x_t)$도 Gaussian 분포를 따르도록 다음과 같이 모델링해 학습을 진행한다: 
 
 {{< rawhtml >}}
 $$
 \begin{aligned}
     p_\theta(x_{t-1}|x_t) \sim \mathcal{N}(x_{t-1};\mu_\theta(x_t, t),\sigma_q^2(x)\mathbf{I})
+\end{aligned}
+$$
+{{< /rawhtml >}}  
+
+> **$\mu_\theta(x_t, t)$**: 원본 이미지 $x_0$을 모르기 때문에 $x_t, t$로 이루어진 함수로 모델링해야한다.  
+> **$\sigma_q^2(t)\mathbf{I}$**: 각각의 timestep t마다 $\alpha$값이 고정이기 때문에 학습 없이 바로 주어진 값 사용하면 된다.  
+
+두 Gaussian Distribution 사이의 KL Divergence는 다음과 같이 구할 수 있다: 
+{{< rawhtml >}}
+$$
+\begin{aligned}
+    D_{KL}(\mathcal{N}(\mathbf{x; \mu_x, \Sigma_x}) \ ||\ \mathcal{N}(\mathbf{y; \mu_y, \Sigma_y})) = \cfrac{1}{2}\bigg[\log{\cfrac{|\Sigma_y|}{|\Sigma_x|}} - d + tr(\Sigma_y^{-1}\Sigma_x) + (\mu_y - \mu_x)^T\Sigma_y^{-1}(\mu_y - \mu_x)\bigg]
+\end{aligned}
+$$
+{{< /rawhtml >}}  
+
+우리가 해결해야할 문제의 경우 두 분포의 variance가 일치하기 때문에 KL Divergence의 값을 optimize하는 것은 두 분포의 mean값의 차이를 최소화하는 것과 같게 된다:  
+{{< rawhtml >}}
+$$
+\begin{aligned}
+    &\argmin_\theta D_{KL}(q(\mathbf{x_{t-1}|x_t, x_0}) \ || \ p_\theta(x_{t-1}|x_t)) \\
+    &= \argmin_\theta D_{KL}(\mathcal{N}(\mathbf{x_{t-1};\mu_q, \Sigma_q(t)}) \ || \ \mathcal{N}(\mathbf{x_{t-1};\mu_\theta, \Sigma_q(t)})) \\
+    &= \cdots \\
+    &= \argmin_\theta\cfrac{1}{2\sigma_q^2(x)}\bigg[||\mathbf{\mu_\theta-\mu_q}||_2^2\bigg]
+\end{aligned}
+$$
+{{< /rawhtml >}}  
+
+앞에서 계산했듯이, $\mu_q(x_t, x_0)$은 다음과 같다:  
+{{< rawhtml >}}
+$$
+\begin{aligned}
+    \mu_q(x_t, x_0) = \cfrac{\sqrt{\alpha_t}(1-\bar\alpha_{t-1})x_t + \sqrt{\bar\alpha_{t-1}}(1-\alpha_t)x_0}{1-\bar\alpha_t}\end{aligned}
+$$
+{{< /rawhtml >}}  
+
+그래서 우리는 이거랑 최대한 비슷하게 만들기 위해 다음과 같이 $\mu_\theta(x_t, t)$를 모델링한다:  
+{{< rawhtml >}}
+$$
+\begin{aligned}
+    \mu_q(x_t, x_0) = \cfrac{\sqrt{\alpha_t}(1-\bar\alpha_{t-1})x_t + \sqrt{\bar\alpha_{t-1}}(1-\alpha_t)\hat{x}_0(x_t, t)}{1-\bar\alpha_t}
+\end{aligned}
+$$
+{{< /rawhtml >}}  
+
+위의 두 식을 아까 구한 KL Divergence term을 optimize하는 부분에 넣어주면 다음과 같이 식을 정리할 수 있다: 
+{{< rawhtml >}}
+$$
+\begin{aligned}
+    &\argmin_\theta D_{KL}(q(\mathbf{x_{t-1}|x_t, x_0}) \ || \ p_\theta(x_{t-1}|x_t)) \\
+    &= \cdots \\
+    &= \argmin_\theta\cfrac{1}{2\sigma_q^2(x)}\bigg[||\mathbf{\mu_\theta-\mu_q}||_2^2\bigg] \\ 
+    &= \cdots \\ 
+    &= \argmin_\theta\cfrac{1}{2\sigma_q^2(x)}\cfrac{\bar{\alpha}_{t-1}(1-\alpha_t)^2}{(1-\bar\alpha_t)^2}\bigg[||\mathbf{\hat{x}_\theta(x_t, t)-x_0}||_2^2\bigg]
+\end{aligned}
+$$
+{{< /rawhtml >}}  
+
+결국 위의 식에서 보면 VDM을 최적화하는 것은 모든 timestep t에서 노이즈된 이미지 $x_t$에서 원본 이미지 $x_0$를 예측하도록 뉴럴 네트워크를 학습시키는 것이다. 
+
+모든 noise level에서 expectation을 예측하도록 학습하는 ELBO objective를 다음과 같이 나타낼 수 있고, stochastic sampling을 통해 최적화를 진행할 수 있다.     
+{{< rawhtml >}}
+$$
+\begin{aligned}
+    \argmin_\theta\mathbb{E}_{t\sim U[2, T]}\big[\mathbb{E}_{q(x_t|x_0)}[D_{KL}(q(\mathbf{x_{t-1}|x_t, x_0}) \ || \ p_\theta(x_{t-1}|x_t))]\big]
 \end{aligned}
 $$
 {{< /rawhtml >}}  
