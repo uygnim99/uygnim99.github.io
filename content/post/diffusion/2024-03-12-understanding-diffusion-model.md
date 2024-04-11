@@ -1,5 +1,5 @@
 ---
-title: "[논문리뷰] Understanding Diffusion Model: The Unified Perspective"
+title: "[논문리뷰] Understanding Diffusion Model: The Unified Perspective (1)"
 date: 2024-03-12
 weight: 1
 # aliases: ["/first"]
@@ -285,9 +285,9 @@ $$
 {{< /rawhtml >}} 
 </details>
 
-> reconstruction term: 첫번째 latent decoder의 log-probability  
-> prior matching term: 마지막 latent encoder와 Gaussian 분포의 유사도. parameter가 없기 때문에 학습되지 않고, optimal할 경우 이 값은 0이다.  
-> consistency term: $x_{t-1}$에서의 encoder와 $x_{t+1}$에서의 decoder의 분포도가 같아지도록 학습해야 $D_{KL} \rightarrow 0$으로 수렴한다. 
+> **reconstruction term**: 첫번째 latent decoder의 log-probability  
+> **prior matching term**: 마지막 latent encoder와 Gaussian 분포의 유사도. parameter가 없기 때문에 학습되지 않고, optimal할 경우 이 값은 0이다.  
+> **consistency term**: $x_{t-1}$에서의 encoder와 $x_{t+1}$에서의 decoder의 분포도가 같아지도록 학습해야 $D_{KL} \rightarrow 0$으로 수렴한다. 
 
 <img src="/images/diffusion/2024-03-12-understanding-diffusion-model/figure4.png" width="80%"/>
 
@@ -340,7 +340,7 @@ $$
 </details>
 
 > reconstruction term, prior matching term: 위에서 설명한 것과 같음.  
-> denoising term: ground truth denoising transition step $q(x_{t-1}|x_t, x_0)$과 유사해지도록 $p_\theta(x_{t-1}|x_t)$를 학습시켜야함.
+> **denoising term**: ground truth denoising transition step $q(x_{t-1}|x_t, x_0)$과 유사해지도록 $p_\theta(x_{t-1}|x_t)$를 학습시켜야함.
 
 결국 ELBO를 최대화하기 위해서는 denoising term을 최소화해야 한다. 이때, q는 원래 encoder이다. 그래서 true $q(x_{t-1}|x_t, x_0)$을 바로 알지는 못하지만, 위에서 사용한 Bayes rule을 이용하여 다시 식을 다음과 같이 바꾸어준다: 
 {{< rawhtml >}}
