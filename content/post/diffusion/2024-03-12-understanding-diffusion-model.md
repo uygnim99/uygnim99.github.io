@@ -363,7 +363,8 @@ $$
 $$
 {{< /rawhtml >}}   
 
-- $[\epsilon_t^*, \epsilon_t]_{t=1}^T \sim\mathcal{N}(\epsilon;\mathbf{0},\mathbf{I})$
+- $[\epsilon_t^*, \epsilon_t]_{t=1}^T \sim\mathcal{N}(\epsilon;\mathbf{0},\mathbf{I})$  
+
 <details>
 <summary style="cursor: pointer;"> 유도과정(미완)) </summary>
 {{< rawhtml >}}
@@ -376,7 +377,7 @@ $$
 \end{aligned}
 $$
 {{< /rawhtml >}}   
-</details>
+</details>  
 
 위에서 구한 식들을 이용해 $q(x_{t-1}|x_t, x_0)$에 대입하면 다음과 같다:  
 {{< rawhtml >}}
@@ -405,8 +406,8 @@ $$
 </details>  
 
 결국 매번 denoising step마다 $x_{t-1} \sim q(x_{t-1}|x_t, x_0)$ 분포를 따르고, 이는 평균 $\mu_q(x_t, x_0), 분산 $\sum_q(t)$의 gaussian 분포임을 확인할 수 있다.  
-> **$\mu_q(x_t, x_0)$**: $x_t, x_0$으로 구성된 함수  
-> **$\sum_q(t)$** $= \sigma_q^2(t)\mathbf{I}$ : coefficient $\alpha$로 이루어진 함수  
+> **$\mathbf{\mu_q(x_t, x_0)}$**: $x_t, x_0$으로 구성된 함수  
+> **$\mathbf{\sum_q(t)}$** $= \sigma_q^2(t)\mathbf{I}$ : coefficient $\alpha$로 이루어진 함수  
 
 이를 이용해 $p_\theta(x_{t-1}|x_t)$도 Gaussian 분포를 따르도록 다음과 같이 모델링해 학습을 진행한다: 
 
@@ -418,8 +419,8 @@ $$
 $$
 {{< /rawhtml >}}  
 
-> **$\mu_\theta(x_t, t)$**: 원본 이미지 $x_0$을 모르기 때문에 $x_t, t$로 이루어진 함수로 모델링해야한다.  
-> **$\sigma_q^2(t)\mathbf{I}$**: 각각의 timestep t마다 $\alpha$값이 고정이기 때문에 학습 없이 바로 주어진 값 사용하면 된다.  
+> **$\mathbf{\mu_\theta(x_t, t)}$**: 원본 이미지 $x_0$을 모르기 때문에 $x_t, t$로 이루어진 함수로 모델링해야한다.  
+> **$\mathbf{\sigma_q^2(t)\mathbf{I}}$**: 각각의 timestep t마다 $\alpha$값이 고정이기 때문에 학습 없이 바로 주어진 값 사용하면 된다.  
 
 두 Gaussian Distribution 사이의 KL Divergence는 다음과 같이 구할 수 있다: 
 {{< rawhtml >}}
