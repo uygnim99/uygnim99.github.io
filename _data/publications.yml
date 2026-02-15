@@ -4,6 +4,6 @@ main:
     authors: <strong>Mingue Park</strong>*, Jisung Hwang*, Seungwoo Yoo*, Kyeongmin Yeo, Minhyuk Sung (*Equal Contribution)
     conference_short: ICLR
     conference: International Conference on Learning Representations <strong>(ICLR)</strong>, 2026.
-    paper: https://arxiv.org/abs/2512.20063
+    pdf: https://arxiv.org/abs/2512.20063
     code: TBD
     image: ./assets/img/pairflow/thumbnail.png
