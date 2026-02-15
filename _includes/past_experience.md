@@ -1,9 +1,7 @@
 ## Past Experience
 
-- **Research Intern**, [Company/Institution Name] (Mar. 2024 - Present)
-  - Description of your role, key responsibilities, and achievements.
-  - Mention specific technologies or projects you worked on.
+- **SW Development Intern**, Autonomous Driving Perception Team, Hyundai Motor Company (Sep. 2023 - Feb. 2024)
 
-- **Teaching Assistant**, [University Name] (Sep. 2023 - Dec. 2023)
+<!-- - **Teaching Assistant**, [University Name] (Sep. 2023 - Dec. 2023)
   - Course: [Course Name] (CS101)
-  - Responsibilities: Grading assignments, holding office hours, and leading recitation sessions.
+  - Responsibilities: Grading assignments, holding office hours, and leading recitation sessions. -->
