@@ -7,3 +7,11 @@ main:
     pdf: https://arxiv.org/abs/2512.20063
     code: TBD
     image: ./assets/img/pairflow/thumbnail.png
+
+  - title: "DiverseVAR: Balancing Diversity and Quality of Next-Scale Visual Autoregressive Models"
+    authors: <strong>Mingue Park</strong>*, Prin Phunyaphibarn*, Phillip Y. Lee, Minhyuk Sung (*Equal Contribution)
+    conference_short: Preprint
+    conference: Preprint
+    pdf: https://arxiv.org/abs/2511.21415
+    code: TBD
+    image: ./assets/img/diversevar/pipeline.png
