@@ -206,8 +206,8 @@ screen and (min-width: 480px) {
 .publications ol.bibliography li .teaser {
     border-radius: 8px;
     box-shadow: 3px 3px 6px #888;
-    height: 180px;
-    width: 320px;
+    height: 123px;
+    width: 270px;
     margin-top: 5px;
     margin-left: 5px;
     margin-bottom: 5px;
