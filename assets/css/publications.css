@@ -211,5 +211,17 @@ screen and (min-width: 480px) {
     margin-top: 5px;
     margin-left: 5px;
     margin-bottom: 5px;
-    object-fit: cover;
+    object-fit: contain;
+    background-color: #fff;
 }
+
+/* .publications ol.bibliography li .teaser {
+    border-radius: 8px;
+    box-shadow: 3px 3px 6px #888;
+    height: 123px;
+    width: 270px;
+    margin-top: 5px;
+    margin-left: 5px;
+    object-fit: contain;
+    background-color: #fff;
+} */
