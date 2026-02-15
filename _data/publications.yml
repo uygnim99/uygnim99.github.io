@@ -1,6 +1,6 @@
 main:
 
-  - title: PairFlow: Closed-Form Source-Target Coupling for Few-Step Generation in Discrete Flow Models
+  - title: "PairFlow: Closed-Form Source-Target Coupling for Few-Step Generation in Discrete Flow Models"
     authors: <strong>Mingue Park</strong>*, Jisung Hwang*, Seungwoo Yoo*, Kyeongmin Yeo, Minhyuk Sung* (*Equal Contribution)
     conference_short: ICLR
     conference: International Conference on Learning Representations <strong>(ICLR)</strong>, 2026.
