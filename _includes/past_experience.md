@@ -7,8 +7,3 @@
 - **Teaching Assistant**, [University Name] (Sep. 2023 - Dec. 2023)
   - Course: [Course Name] (CS101)
   - Responsibilities: Grading assignments, holding office hours, and leading recitation sessions.
-
-- **Undergraduate Researcher**, [Lab Name], [University Name] (Jan. 2022 - Aug. 2023)
-  - Advisor: Prof. [Name]
-  - Worked on [Topic/Project Name].
-  - Published a paper in [Conference/Journal].
