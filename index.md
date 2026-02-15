@@ -8,6 +8,6 @@ layout: homepage
 
 {% include_relative _includes/publications.md %}
 
-{% include_relative _includes/services.md %}
+{% include_relative _includes/academic_services.md %}
 
 {% include_relative _includes/past_experience.md %}
