@@ -34,7 +34,7 @@ auto_dark_mode: true
 
 # Font
 # You can use this option to choose between Serif, Sans Serif, or GyeonggiMillennium fonts.
-font: "GyeonggiMillennium" # "Serif", "Sans Serif", or "GyeonggiMillennium"
+font: "Sans Serif" # "Serif", "Sans Serif", or "GyeonggiMillennium"
 
 # Google Analytics ID
 # Please remove this if you don't use Google Analytics
