@@ -5,7 +5,7 @@ main:
     conference_short: ICLR
     conference: International Conference on Learning Representations <strong>(ICLR)</strong>, 2026.
     pdf: https://arxiv.org/abs/2512.20063
-    code: TBD
+    code: https://github.com/KAIST-Visual-AI-Group/PairFlow
     image: ./assets/img/pairflow/thumbnail.png
 
   - title: "DiverseVAR: Balancing Diversity and Quality of Next-Scale Visual Autoregressive Models"
