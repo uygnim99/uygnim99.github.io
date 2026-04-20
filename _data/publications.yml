@@ -1,5 +1,13 @@
 main:
 
+  - title: "Token Warping Helps MLLMs Look from Nearby Viewpoints"
+    authors: Phillip Y. Lee*, Chanho Park, <strong>Mingue Park</strong>, Seungwoo Yoo, Juil Koo, Minhyuk Sung (*Equal Contribution)
+    conference_short: CVPR
+    conference: IEEE/CVF Conference on Computer Vision and Pattern Recognition <strong>(CVPR)</strong>, 2026.
+    pdf: https://arxiv.org/abs/2604.02870
+    code: https://github.com/KAIST-Visual-AI-Group/Token-Warping-MLLM
+    image: ./assets/img/tokenwarp/thumbnail.png
+
   - title: "PairFlow: Closed-Form Source-Target Coupling for Few-Step Generation in Discrete Flow Models"
     authors: <strong>Mingue Park</strong>*, Jisung Hwang*, Seungwoo Yoo*, Kyeongmin Yeo, Minhyuk Sung (*Equal Contribution)
     conference_short: ICLR
