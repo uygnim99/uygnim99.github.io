@@ -1,5 +1,13 @@
 main:
 
+  - title: "Drifting Field Policy: A One-Step Generative Policy via Wasserstein Gradient Flow"
+    authors: Juil Koo, Mingue Park, Jiwon Choi, Yunhong Min, Minhyuk Sung
+    conference_short: Preprint
+    conference: Preprint
+    pdf: https://arxiv.org/abs/2605.07727
+    code: https://github.com/KAIST-Visual-AI-Group/DFP
+    image: ./assets/img/dfp/thumbnail.png
+
   - title: "Token Warping Helps MLLMs Look from Nearby Viewpoints"
     authors: Phillip Y. Lee*, Chanho Park, <strong>Mingue Park</strong>, Seungwoo Yoo, Juil Koo, Minhyuk Sung (*Equal Contribution)
     conference_short: CVPR
@@ -18,8 +26,8 @@ main:
 
   - title: "DiverseVAR: Balancing Diversity and Quality of Next-Scale Visual Autoregressive Models"
     authors: <strong>Mingue Park</strong>*, Prin Phunyaphibarn*, Phillip Y. Lee, Minhyuk Sung (*Equal Contribution)
-    conference_short: Preprint
-    conference: Preprint
+    conference_short: ECCV
+    conference: European Conference on Computer Vision <strong>(ECCV)</strong>, 2026.
     pdf: https://arxiv.org/abs/2511.21415
     code: TBD
     image: ./assets/img/diversevar/teaser.png

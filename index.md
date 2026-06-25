@@ -4,6 +4,7 @@ layout: homepage
 
 ## News
 
+- **[Jun. 2026]** One paper is accepted to ECCV 2026.
 - **[Apr. 2026]** One paper is accepted to CVPR 2026.
 - **[Feb. 2026]** One paper is accepted to ICLR 2026.
 
