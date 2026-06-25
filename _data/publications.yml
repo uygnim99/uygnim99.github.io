@@ -1,7 +1,7 @@
 main:
 
   - title: "Drifting Field Policy: A One-Step Generative Policy via Wasserstein Gradient Flow"
-    authors: Juil Koo, Mingue Park, Jiwon Choi, Yunhong Min, Minhyuk Sung
+    authors: Juil Koo, <strong>Mingue Park</strong>, Jiwon Choi, Yunhong Min, Minhyuk Sung
     conference_short: Preprint
     conference: Preprint
     pdf: https://arxiv.org/abs/2605.07727
@@ -9,7 +9,7 @@ main:
     image: ./assets/img/dfp/thumbnail.png
 
   - title: "Token Warping Helps MLLMs Look from Nearby Viewpoints"
-    authors: Phillip Y. Lee*, Chanho Park, <strong>Mingue Park</strong>, Seungwoo Yoo, Juil Koo, Minhyuk Sung (*Equal Contribution)
+    authors: Phillip Y. Lee*, Chanho Park*, <strong>Mingue Park</strong>, Seungwoo Yoo, Juil Koo, Minhyuk Sung (*Equal Contribution)
     conference_short: CVPR
     conference: IEEE/CVF Conference on Computer Vision and Pattern Recognition <strong>(CVPR)</strong>, 2026.
     pdf: https://arxiv.org/abs/2604.02870
